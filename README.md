@@ -2,7 +2,7 @@
 # eyedroppeR <img src='dev/images/hex1.png' align="right" height="240" />
 
 `eyedroppeR` allows you to choose an image, plot it and click on the
-image to return the hex codes of the selected pixel.
+image to return the hex codes of the selected pixel all within R.
 
 There are a few ways to get colours from an image but this aims is to
 provide a simple, no fuss approach to get the hex codes into R.
@@ -37,7 +37,18 @@ Use `eyedropper` with the following steps:
 5.  Click the 5 desired colours. The image will be stretched to the
     borders of the window, but that’s OK.
 
-6.  Done! Copy the returned string and add it to you script and start
+6.  Done! Copy the returned string and add it to your script and start
     using `pal`.
+
+``` r
+pal <- eyedropper(n = 5)
+
+Click on image to select colours
+Colours selected: 5/5
+ ------ pal ------
+               
+
+pal <- c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5')
+```
 
 <img src='dev/images/cheese.png' align="center"/>
