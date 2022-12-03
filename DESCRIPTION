@@ -1,11 +1,28 @@
 Package: eyedroppeR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Extracts hex codes upon clicking an image
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: 
+  c(person(given = "Daniel",
+           family = "Oehm",
+           role = c("aut", "cre"),
+           email = "danieloehm@gmail.com"))
+Description: Plots an image either locally or from a url and allows the user
+    to click the image to save the hex of the pixel.
+Depends: 
+  R (>= 3.5.0)
+Imports:
+  ggplot2,
+  purrr,
+  grid,
+  glue,
+  seecolor,
+  ggchicklet,
+  ggpath,
+  ggpubr,
+  magick,
+  patchwork
+License: CC0
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.0
