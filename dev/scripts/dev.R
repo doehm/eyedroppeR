@@ -62,6 +62,8 @@ ggplot() +
   geom_from_path(aes(0, -0.1, path = "dev/images/eyedropper.jpg")) +
   geom_richtext(aes(0, -0.05, label = icon), size = 100, label.color = NA, fill = NA) +
   geom_text(aes(0, -0.2, label = "eyedroppeR"), colour = txt, size = 48, fontface = "bold", family = "caveat") +
+  annotate("rect", xmin = 1, xmax = length(pal), ymin = 0.45, ymax = 0.55, fill = "grey90", alpha = 0.5) +
+  annotate("text", (length(pal)+1)/2, y = 0.5, label = "---- palette ----", size = 12) +
   ylim(-0.5, 0.3) +
   theme_void() +
   theme(plot.background = element_rect(fill = "skyblue"))
