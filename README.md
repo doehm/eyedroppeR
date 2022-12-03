@@ -4,6 +4,9 @@
 `eyedroppeR` allows you to choose an image, plot it and click on the
 image to return the hex codes of the selected pixel.
 
+There are a few ways to get colours from an image but this aims is to
+provide a simple, no fuss approach to get the hex codes into R.
+
 ## Installation
 
 ``` r
