@@ -43,3 +43,30 @@ g2 <- ggplot() +
 
 g2 + g1
 
+
+
+
+# 🔪 hex ------------------------------------------------------------------
+
+library(showtext)
+library(ggtext)
+
+font_add_google("Caveat", "caveat")
+font_add("fa-solid", regular = "C:/Users/Dan/Documents/R/repos/survivorDev/assets/fonts/fontawesome-free-6.2.0-web/webfonts/fa-solid-900.ttf")
+showtext_auto()
+
+txt <- "grey20"
+icon <- glue("<span style='font-family:fa-solid; color:{txt}'>&#xf1fb;</span>")
+
+ggplot() +
+  geom_from_path(aes(0, -0.1, path = "dev/images/eyedropper.jpg")) +
+  geom_richtext(aes(0, -0.05, label = icon), size = 100, label.color = NA, fill = NA) +
+  geom_text(aes(0, -0.2, label = "eyedroppeR"), colour = txt, size = 48, fontface = "bold", family = "caveat") +
+  ylim(-0.5, 0.3) +
+  theme_void() +
+  theme(plot.background = element_rect(fill = "skyblue"))
+
+ggsave("dev/images/hex.png", height = 5, width = 5)
+
+image_read(cropcircles::hex_crop("dev/images/hex.png")) |>
+  image_write("dev/images/hex1.png")

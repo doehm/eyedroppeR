@@ -7,7 +7,7 @@ Authors@R:
            family = "Oehm",
            role = c("aut", "cre"),
            email = "danieloehm@gmail.com"))
-Description: Plots an image either locally or from a url and allows the user
+Description: Plots an image either locally or from a URL and allows the user
     to click the image to save the hex of the pixel.
 Depends: 
   R (>= 3.5.0)
