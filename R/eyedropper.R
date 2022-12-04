@@ -23,13 +23,14 @@
 #'
 #' @import ggplot2
 #' @importFrom utils readClipboard read.table
-#' @importFrom magick image_read
-#' @importFrom purrr map_chr
+#' @importFrom magick image_read image_data
+#' @importFrom purrr map_chr reduce
 #' @importFrom grid grid.locator
 #' @importFrom glue glue
 #' @importFrom seecolor print_color
 #' @importFrom ggchicklet geom_chicklet
 #' @importFrom ggpath geom_from_path
+#' @importFrom stringr str_remove
 #' @import patchwork
 #'
 #' @examples \dontrun{
