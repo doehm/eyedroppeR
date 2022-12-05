@@ -24,13 +24,14 @@
 #' @import ggplot2
 #' @importFrom utils readClipboard read.table
 #' @importFrom magick image_read image_data
-#' @importFrom purrr map_chr reduce
+#' @importFrom purrr map_chr map_dbl reduce
 #' @importFrom grid grid.locator
 #' @importFrom glue glue
 #' @importFrom seecolor print_color
 #' @importFrom ggchicklet geom_chicklet
 #' @importFrom ggpath geom_from_path
-#' @importFrom stringr str_remove
+#' @importFrom stringr str_remove str_split
+#' @importFrom stats kmeans
 #' @import patchwork
 #'
 #' @examples \dontrun{
@@ -70,17 +71,123 @@ eyedropper <- function(n, img_path = NULL) {
   })
 
   print_color(pal)
-  cat(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')"))
+  cat(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
 
-  g1 <- ggplot(data.frame(x = 1:length(pal),y = 1)) +
-    geom_chicklet(aes(x, y), fill = pal, radius = grid::unit(9, "pt")) +
-    theme_void()
+  g1 <- show_pal(pal)
 
   g2 <- ggplot() +
     geom_from_path(aes(0, 0, path = img_path), width = 0.9) +
     theme_void()
 
   print(g2 + g1)
+
+  pal
+
+}
+
+
+#' Show palette
+#'
+#' Plots the palette
+#'
+#' @param pal Palette. Vector of hex codes
+#'
+#' @return ggplot
+#' @export
+#'
+#' @examples \dontrun{
+#' pal <- c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5')
+#' show_pal(pal)
+#' }
+show_pal <- function(pal) {
+  ggplot(data.frame(x = 1:length(pal),y = 1)) +
+    geom_chicklet(aes(x, y), fill = pal, radius = grid::unit(9, "pt")) +
+    theme_void()
+}
+
+
+#' Manually sort palette
+#'
+#' The palette is displayed in the plotting window where you can click
+#' the colours in the order you want to sort them. The sorted palette
+#' will be returned.
+#'
+#' @param pal Palette. Character vector of hex codes
+#'
+#' @return
+#' @export
+#'
+#' @examples \dontrun{
+#' pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
+#' sort_pal(pal)
+#' }
+sort_pal <- function(pal, n = NULL) {
+  print(show_pal(pal))
+  if(is.null(n)) n <- length(pal)
+  cat(glue("Click {n} colours in the desired order\n"))
+  pos_ls <- list()
+  for(k in 1:n) {
+    pos_ls[[k]] <- grid::grid.locator(unit = "npc")
+  }
+
+  id <- as.numeric(map_chr(pos_ls, "x"))
+  new_pal <- floor(id*length(pal)) + 1
+  pal <- pal[new_pal]
+  print(show_pal(pal))
+  cat(paste0("\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
+  pal
+}
+
+
+#' Extracts palette from image
+#'
+#' The image is read in using \code{magick}, converted to RGB and clustered using kmeans. The user
+#' must specify the number of clusters. The cluster centroids become the palette values.
+#'
+#' @param n
+#' @param img_path
+#'
+#' @importFrom purrr map_chr
+#'
+#' @return Returns a character vector of hex codes
+#' @export
+#'
+#' @examples \dontrun{
+#' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+#' extract_pal(path)
+#' }
+extract_pal <- function(n, img_path = NULL) {
+
+  if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
+
+  img <- image_read(img_path)
+  x <- as.integer(as.array(image_data(img, "rgb")))
+  rgb_mat <- matrix(0, nrow = prod(dim(x)[1:2]), ncol = 5)
+  k <- 0
+  for(i in 1:dim(x)[1]) {
+    for(j in 1:dim(x)[2]) {
+      k <- k + 1
+      rgb_mat[k, ] <- c(i, j, x[i, j, ])
+    }
+  }
+
+  km <- kmeans(rgb_mat[,3:5], n)
+  km <- round(km$centers)
+
+  pal <- map_chr(1:n, ~rgb(km[.x,1], km[.x,2], km[.x,3], maxColorValue = 255))
+
+  cat("\nSort palette")
+  print(show_pal(pal))
+  nx <- as.numeric(readline("How many colours to pick? "))
+  pal <- sort_pal(pal, n = nx)
+
+  g1 <- ggplot() +
+    geom_from_path(aes(0, 0, path = img_path), width = 0.9) +
+    theme_void()
+
+  g2 <- show_pal(pal)
+
+  print(g1 + g2)
 
   pal
 

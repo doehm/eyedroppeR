@@ -62,8 +62,8 @@ ggplot() +
   geom_from_path(aes(0, -0.1, path = "dev/images/eyedropper.jpg")) +
   geom_richtext(aes(0, -0.05, label = icon), size = 100, label.color = NA, fill = NA) +
   geom_text(aes(0, -0.2, label = "eyedroppeR"), colour = txt, size = 48, fontface = "bold", family = "caveat") +
-  annotate("rect", xmin = 1, xmax = length(pal), ymin = 0.45, ymax = 0.55, fill = "grey90", alpha = 0.5) +
-  annotate("text", (length(pal)+1)/2, y = 0.5, label = "---- palette ----", size = 12) +
+  # annotate("rect", xmin = 1, xmax = length(pal), ymin = 0.45, ymax = 0.55, fill = "grey90", alpha = 0.5) +
+  # annotate("text", (length(pal)+1)/2, y = 0.5, label = "---- palette ----", size = 12) +
   ylim(-0.5, 0.3) +
   theme_void() +
   theme(plot.background = element_rect(fill = "skyblue"))
@@ -72,3 +72,23 @@ ggsave("dev/images/hex.png", height = 5, width = 5)
 
 image_read(cropcircles::hex_crop("dev/images/hex.png")) |>
   image_write("dev/images/hex1.png")
+
+
+
+# sort pal ----------------------------------------------------------------
+
+pal <- y
+
+show_pal(pal)
+
+pos_ls <- list()
+for(k in 1:length(pal)) {
+  pos_ls[[k]] <- grid::grid.locator(unit = "npc")
+}
+
+id <- as.numeric(map_chr(pos_ls, "x"))
+new_pal <- purrr::map_dbl(id, ~which(sort(id) == .x))
+show_pal(pal[new_pal])
+
+
+pal <- c('#F4F3E6', '#DDC6B3', '#AD908D', '#866D6C', '#664B39', '#040305', '#C57850', '#1B1B1F', '#35140E', '#698795', '#36353D', '#664B39', '#9C5B37', '#698795', '#EC5921', '#C8121F', '#621615', '#97201A', '#F00C1D', '#565171', '#040305')
