@@ -56,11 +56,13 @@ pal <- c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5')
 
 ## Other functions
 
--   `sort_pal` allows you to manually sort a palette by clicking on the
+-   `sort_pal`: Allows you to manually sort a palette by clicking on the
     colours in order. It also allows you to select a specified number of
     colours if you don’t want them all.
 
--   `extract_pal` automatically selects a specified number of colours
+-   `extract_pal`: Automatically selects a specified number of colours
     using a clustering algorithm. It will read the image path from the
     clipboard as well and allow you to sort the colours after they are
     extracted.
+
+-   `show_pal`: Simple helper to display the palette.
