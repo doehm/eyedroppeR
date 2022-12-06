@@ -4,9 +4,9 @@ output: github_document
 
 # eyedroppeR <img src='dev/images/hex1.png' align="right" height="240" />
 
-With `eyedroppeR` you can click on the image and it will return the hex codes of the selected pixel all within R.
+There are fancy ways to extract colours from images but sometimes it's easier if you could simply click on the image and choose the colours you want.
 
-There are a few ways to get colours from an image but the aim is to provide a simple, no fuss approach to get the hex codes into R.
+With `eyedroppeR` you can click on the image and it will return the hex codes of the selected pixel all within R.
 
 ## Installation
 
