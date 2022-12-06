@@ -14,6 +14,13 @@ codes of the selected pixel all within R.
 devtools::install_github("doehm/eyedroppeR")
 ```
 
+You may also need to install
+[`ggchicklet`](https://github.com/hrbrmstr/ggchicklet)
+
+``` r
+install.packages("ggchicklet", repos = "https://cinc.rud.is")
+```
+
 ## Usage
 
 Use `eyedropper` with the following steps:
