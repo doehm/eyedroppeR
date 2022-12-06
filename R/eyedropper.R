@@ -113,8 +113,9 @@ show_pal <- function(pal) {
 #' will be returned.
 #'
 #' @param pal Palette. Character vector of hex codes
+#' @param n Number of colours to choose
 #'
-#' @return
+#' @return Character vector
 #' @export
 #'
 #' @examples \dontrun{
@@ -144,8 +145,8 @@ sort_pal <- function(pal, n = NULL) {
 #' The image is read in using \code{magick}, converted to RGB and clustered using kmeans. The user
 #' must specify the number of clusters. The cluster centroids become the palette values.
 #'
-#' @param n
-#' @param img_path
+#' @param n Number of colours to extract
+#' @param img_path Path to image. If `NULL` the function will read from the clipboard
 #'
 #' @importFrom purrr map_chr
 #'

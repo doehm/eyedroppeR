@@ -8,6 +8,11 @@ sort_pal(pal, n = NULL)
 }
 \arguments{
 \item{pal}{Palette. Character vector of hex codes}
+
+\item{n}{Number of colours to choose}
+}
+\value{
+Character vector
 }
 \description{
 The palette is displayed in the plotting window where you can click

@@ -7,7 +7,9 @@
 extract_pal(n, img_path = NULL)
 }
 \arguments{
-\item{img_path}{}
+\item{n}{Number of colours to extract}
+
+\item{img_path}{Path to image. If `NULL` the function will read from the clipboard}
 }
 \value{
 Returns a character vector of hex codes
