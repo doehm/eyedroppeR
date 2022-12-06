@@ -54,6 +54,8 @@ pal <- c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5')
 
 <img src='dev/images/cheese.png' align="center"/>
 
+<img src='dev/images/eyedropper.gif' align="center" />
+
 ## Other functions
 
 -   `sort_pal`: Allows you to manually sort a palette by clicking on the
