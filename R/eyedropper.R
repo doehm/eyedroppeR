@@ -1,3 +1,5 @@
+utils::globalVariables(c("x", "y"))
+
 #' Eyedropper
 #'
 #' Plots an image and allows the user to click on the image to
@@ -34,7 +36,7 @@
 #' @importFrom stats kmeans
 #' @import patchwork
 #'
-#' @examples \dontrun{
+#' @examplesIf FALSE
 #' # image from https://colorpalettes.net/color-palette-1781/
 #' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #'
@@ -42,7 +44,6 @@
 #' x <- eyedropper(n = 5, path)
 #'
 #' x
-#' }
 eyedropper <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
@@ -88,17 +89,16 @@ eyedropper <- function(n, img_path = NULL) {
 
 #' Show palette
 #'
-#' Plots the palette
+#' Plots the supplied palette for quick inspection
 #'
 #' @param pal Palette. Vector of hex codes
 #'
 #' @return ggplot
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples
 #' pal <- c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5')
 #' show_pal(pal)
-#' }
 show_pal <- function(pal) {
   ggplot(data.frame(x = 1:length(pal),y = 1)) +
     geom_chicklet(aes(x, y), fill = pal, radius = grid::unit(9, "pt")) +
@@ -118,10 +118,9 @@ show_pal <- function(pal) {
 #' @return Character vector
 #' @export
 #'
-#' @examples \dontrun{
+#' @examplesIf FALSE
 #' pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
 #' sort_pal(pal)
-#' }
 sort_pal <- function(pal, n = NULL) {
   print(show_pal(pal))
   if(is.null(n)) n <- length(pal)
@@ -153,10 +152,9 @@ sort_pal <- function(pal, n = NULL) {
 #' @return Returns a character vector of hex codes
 #' @export
 #'
-#' @examples \dontrun{
+#' @examplesIf FALSE
 #' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #' extract_pal(path)
-#' }
 extract_pal <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]

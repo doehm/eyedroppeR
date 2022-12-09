@@ -19,8 +19,8 @@ The image is read in using \code{magick}, converted to RGB and clustered using k
 must specify the number of clusters. The cluster centroids become the palette values.
 }
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 extract_pal(path)
-}
+\dontshow{\}) # examplesIf}
 }

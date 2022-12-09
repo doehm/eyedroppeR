@@ -13,11 +13,9 @@ show_pal(pal)
 ggplot
 }
 \description{
-Plots the palette
+Plots the supplied palette for quick inspection
 }
 \examples{
-\dontrun{
 pal <- c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5')
 show_pal(pal)
-}
 }

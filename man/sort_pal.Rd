@@ -20,8 +20,8 @@ the colours in the order you want to sort them. The sorted palette
 will be returned.
 }
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
 sort_pal(pal)
-}
+\dontshow{\}) # examplesIf}
 }
