@@ -37,8 +37,8 @@ Use \code{eyedropper} with the following steps:
 path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 
 # Run eyedropper and click on 5 colours
-x <- eyedropper(n = 5, path)
+pal <- eyedropper(n = 5, path)
 
-x
+pal
 \dontshow{\}) # examplesIf}
 }

@@ -41,9 +41,9 @@ utils::globalVariables(c("x", "y"))
 #' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #'
 #' # Run eyedropper and click on 5 colours
-#' x <- eyedropper(n = 5, path)
+#' pal <- eyedropper(n = 5, path)
 #'
-#' x
+#' pal
 eyedropper <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
@@ -61,11 +61,12 @@ eyedropper <- function(n, img_path = NULL) {
   }
   cat(glue("Colours selected: {n}/{n}"))
 
+  img_dat <- image_data(image_read(img_path))
+  dims <- dim(img_dat)
+
   pal <- map_chr(eye_ls, ~{
     coords <- as.numeric(str_remove(reduce(.x, c), "npc"))
-    coords[2] <- 2-coords[2]
-    img_dat <- image_data(image_read(img_path))
-    dims <- dim(img_dat)
+    coords[2] <- ceiling(coords[2])-coords[2]
     xpx <- round(coords[1]*dims[2])
     ypx <- round(coords[2]*dims[3])
     paste0("#", paste0(img_dat[, xpx, ypx][1:3], collapse = ""))
