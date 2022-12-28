@@ -2,7 +2,7 @@
 % Please edit documentation in R/eyedropper.R
 \name{extract_pal}
 \alias{extract_pal}
-\title{Extracts palette from image}
+\title{Extracts palette from an image}
 \usage{
 extract_pal(n, img_path = NULL)
 }
@@ -17,6 +17,7 @@ Returns a character vector of hex codes
 \description{
 The image is read in using \code{magick}, converted to RGB and clustered using kmeans. The user
 must specify the number of clusters. The cluster centroids become the palette values.
+The function will ask the user to sort the palette values after clustering
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

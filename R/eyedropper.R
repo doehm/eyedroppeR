@@ -30,7 +30,6 @@ utils::globalVariables(c("x", "y"))
 #' @importFrom grid grid.locator
 #' @importFrom glue glue
 #' @importFrom seecolor print_color
-#' @importFrom ggchicklet geom_chicklet
 #' @importFrom ggpath geom_from_path
 #' @importFrom stringr str_remove str_split
 #' @importFrom stats kmeans
@@ -48,10 +47,15 @@ eyedropper <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
 
-  print(
-    ggplot() +
-      ggpubr::background_image(image_read(img_path))
+  err_bad_link <- simpleError("Incorrect path on clipboard. Please copy address again or call manually using img_path")
+  tryCatch(
+    {print(
+      ggplot() +
+        ggpubr::background_image(image_read(img_path))
+    )},
+    error = function(e) stop(err_bad_link)
   )
+
 
   eye_ls <- list()
   cat("\nClick on image to select colours\n")
@@ -102,12 +106,12 @@ eyedropper <- function(n, img_path = NULL) {
 #' show_pal(pal)
 show_pal <- function(pal) {
   ggplot(data.frame(x = 1:length(pal),y = 1)) +
-    geom_chicklet(aes(x, y), fill = pal, radius = grid::unit(9, "pt")) +
+    geom_col(aes(x, y), fill = pal, width = 1) +
     theme_void()
 }
 
 
-#' Manually sort palette
+#' Manually sort a palette
 #'
 #' The palette is displayed in the plotting window where you can click
 #' the colours in the order you want to sort them. The sorted palette
@@ -140,10 +144,11 @@ sort_pal <- function(pal, n = NULL) {
 }
 
 
-#' Extracts palette from image
+#' Extracts palette from an image
 #'
 #' The image is read in using \code{magick}, converted to RGB and clustered using kmeans. The user
 #' must specify the number of clusters. The cluster centroids become the palette values.
+#' The function will ask the user to sort the palette values after clustering
 #'
 #' @param n Number of colours to extract
 #' @param img_path Path to image. If `NULL` the function will read from the clipboard
@@ -159,6 +164,15 @@ sort_pal <- function(pal, n = NULL) {
 extract_pal <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
+
+  err_bad_link <- simpleError("Incorrect path on clipboard. Please copy address again or call manually")
+  tryCatch(
+    {print(
+      ggplot() +
+        ggpubr::background_image(image_read(img_path))
+    )},
+    error = function(e) stop(err_bad_link)
+  )
 
   img <- image_read(img_path)
   x <- as.integer(as.array(image_data(img, "rgb")))

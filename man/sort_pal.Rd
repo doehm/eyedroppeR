@@ -2,7 +2,7 @@
 % Please edit documentation in R/eyedropper.R
 \name{sort_pal}
 \alias{sort_pal}
-\title{Manually sort palette}
+\title{Manually sort a palette}
 \usage{
 sort_pal(pal, n = NULL)
 }
