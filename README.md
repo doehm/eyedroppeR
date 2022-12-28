@@ -14,6 +14,8 @@ codes of the selected pixel all within R.
 devtools::install_github("doehm/eyedroppeR")
 ```
 
+Edit: I’ve removed the dependency on `ggchicklet` since it’s not on CRAN
+
 You may also need to install
 [`ggchicklet`](https://github.com/hrbrmstr/ggchicklet)
 
