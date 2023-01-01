@@ -35,14 +35,16 @@ utils::globalVariables(c("x", "y"))
 #' @importFrom stats kmeans
 #' @import patchwork
 #'
-#' @examplesIf FALSE
-#' # image from https://colorpalettes.net/color-palette-1781/
-#' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+#' @examples
+#' if(interactive()) {
+#'   # image from https://colorpalettes.net/color-palette-1781/
+#'   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #'
-#' # Run eyedropper and click on 5 colours
-#' pal <- eyedropper(n = 5, path)
+#'   # Run eyedropper and click on 5 colours
+#'   pal <- eyedropper(n = 5, path)
 #'
-#' pal
+#'   pal
+#' }
 eyedropper <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
