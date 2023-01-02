@@ -1,6 +1,6 @@
 Package: eyedroppeR
 Type: Package
-Title: Extracts hex codes upon clicking an image
+Title: Extract Hex Codes by Clicking an Image
 Version: 0.1.0
 Authors@R: 
   c(person(given = "Daniel",

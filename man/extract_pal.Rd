@@ -20,8 +20,8 @@ must specify the number of clusters. The cluster centroids become the palette va
 The function will ask the user to sort the palette values after clustering
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
-extract_pal(path)
-\dontshow{\}) # examplesIf}
+if(interactive()) {
+  path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+  extract_pal(5, path)
+}
 }

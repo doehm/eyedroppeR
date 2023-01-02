@@ -125,9 +125,11 @@ show_pal <- function(pal) {
 #' @return Character vector
 #' @export
 #'
-#' @examplesIf FALSE
-#' pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
-#' sort_pal(pal)
+#' @examples
+#' if(interactive()) {
+#'   pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
+#'   sort_pal(pal)
+#' }
 sort_pal <- function(pal, n = NULL) {
   print(show_pal(pal))
   if(is.null(n)) n <- length(pal)
@@ -160,9 +162,11 @@ sort_pal <- function(pal, n = NULL) {
 #' @return Returns a character vector of hex codes
 #' @export
 #'
-#' @examplesIf FALSE
-#' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
-#' extract_pal(path)
+#' @examples
+#' if(interactive()) {
+#'   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+#'   extract_pal(5, path)
+#' }
 extract_pal <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
