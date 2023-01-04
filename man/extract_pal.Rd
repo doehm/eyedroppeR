@@ -20,7 +20,7 @@ must specify the number of clusters. The cluster centroids become the palette va
 The function will ask the user to sort the palette values after clustering
 }
 \examples{
-if(interactive()) {
+if(FALSE) {
   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
   extract_pal(5, path)
 }

@@ -32,7 +32,7 @@ Use \code{eyedropper} with the following steps:
 }
 }
 \examples{
-if(interactive()) {
+if(FALSE) {
   # image from https://colorpalettes.net/color-palette-1781/
   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 

@@ -20,7 +20,7 @@ the colours in the order you want to sort them. The sorted palette
 will be returned.
 }
 \examples{
-if(interactive()) {
+if(FALSE) {
   pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
   sort_pal(pal)
 }

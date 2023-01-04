@@ -36,7 +36,7 @@ utils::globalVariables(c("x", "y"))
 #' @import patchwork
 #'
 #' @examples
-#' if(interactive()) {
+#' if(FALSE) {
 #'   # image from https://colorpalettes.net/color-palette-1781/
 #'   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #'
@@ -126,7 +126,7 @@ show_pal <- function(pal) {
 #' @export
 #'
 #' @examples
-#' if(interactive()) {
+#' if(FALSE) {
 #'   pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
 #'   sort_pal(pal)
 #' }
@@ -163,7 +163,7 @@ sort_pal <- function(pal, n = NULL) {
 #' @export
 #'
 #' @examples
-#' if(interactive()) {
+#' if(FALSE) {
 #'   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #'   extract_pal(5, path)
 #' }
