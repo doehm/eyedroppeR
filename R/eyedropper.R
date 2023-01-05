@@ -35,16 +35,14 @@ utils::globalVariables(c("x", "y"))
 #' @importFrom stats kmeans
 #' @import patchwork
 #'
-#' @examples
-#' if(FALSE) {
-#'   # image from https://colorpalettes.net/color-palette-1781/
-#'   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+#' @examplesIf FALSE
+#' # image from https://colorpalettes.net/color-palette-1781/
+#' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #'
-#'   # Run eyedropper and click on 5 colours
-#'   pal <- eyedropper(n = 5, path)
+#' # Run eyedropper and click on 5 colours
+#' pal <- eyedropper(n = 5, path)
 #'
-#'   pal
-#' }
+#' pal
 eyedropper <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
@@ -125,11 +123,9 @@ show_pal <- function(pal) {
 #' @return Character vector
 #' @export
 #'
-#' @examples
-#' if(FALSE) {
-#'   pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
-#'   sort_pal(pal)
-#' }
+#' @examplesIf FALSE
+#' pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
+#' sort_pal(pal)
 sort_pal <- function(pal, n = NULL) {
   print(show_pal(pal))
   if(is.null(n)) n <- length(pal)
@@ -162,11 +158,9 @@ sort_pal <- function(pal, n = NULL) {
 #' @return Returns a character vector of hex codes
 #' @export
 #'
-#' @examples
-#' if(FALSE) {
-#'   path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
-#'   extract_pal(5, path)
-#' }
+#' @examplesIf FALSE
+#' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+#' extract_pal(5, path)
 extract_pal <- function(n, img_path = NULL) {
 
   if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]

@@ -32,13 +32,13 @@ Use \code{eyedropper} with the following steps:
 }
 }
 \examples{
-if(FALSE) {
-  # image from https://colorpalettes.net/color-palette-1781/
-  path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# image from https://colorpalettes.net/color-palette-1781/
+path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 
-  # Run eyedropper and click on 5 colours
-  pal <- eyedropper(n = 5, path)
+# Run eyedropper and click on 5 colours
+pal <- eyedropper(n = 5, path)
 
-  pal
-}
+pal
+\dontshow{\}) # examplesIf}
 }
