@@ -140,7 +140,9 @@ sort_pal <- function(pal, n = NULL) {
   pal <- pal[new_pal]
   print(show_pal(pal))
   cat(paste0("\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
+
   pal
+
 }
 
 
