@@ -37,7 +37,7 @@ Use `eyedropper` with the following steps:
 3. Choose how many colours to pick e.g. `n = 5`.
 4. Run `pal <- eyedropper(n = 5)`. 
     
-    4.a. `eyedropper` will read the copied address from the clipboard.
+    4.a. `eyedropper` will read the copied address from the clipboard. Note: This will only work on Windows machines. For other OS' you'll just need to paste the URL in manually to `img_path` argument.
     
     4.b. If you have a local file or a saved `path` you can reference it directly with 
     `pal <- eyedropper(n = 5, img_path = path)`

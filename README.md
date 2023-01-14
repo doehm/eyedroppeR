@@ -41,6 +41,8 @@ Use `eyedropper` with the following steps:
 4.  Run `pal <- eyedropper(n = 5)`.
 
     4.a. `eyedropper` will read the copied address from the clipboard.
+    Note: This will only work on Windows machines. For other OS’ you’ll
+    just need to paste the URL in manually to `img_path` argument.
 
     4.b. If you have a local file or a saved `path` you can reference it
     directly with `pal <- eyedropper(n = 5, img_path = path)`
@@ -57,13 +59,13 @@ Use `eyedropper` with the following steps:
 
 ## Other functions
 
--   `sort_pal`: Allows you to manually sort a palette by clicking on the
-    colours in order. It also allows you to select a specified number of
-    colours if you don’t want them all.
+- `sort_pal`: Allows you to manually sort a palette by clicking on the
+  colours in order. It also allows you to select a specified number of
+  colours if you don’t want them all.
 
--   `extract_pal`: Automatically selects a specified number of colours
-    using a clustering algorithm. It will read the image path from the
-    clipboard as well and allow you to sort the colours after they are
-    extracted.
+- `extract_pal`: Automatically selects a specified number of colours
+  using a clustering algorithm. It will read the image path from the
+  clipboard as well and allow you to sort the colours after they are
+  extracted.
 
--   `show_pal`: Simple helper to display the palette.
+- `show_pal`: Simple helper to display the palette.
