@@ -1,5 +1,5 @@
 
-# eyedroppeR <img src='dev/images/hex-amatic.jpg' align="right" height="240" />
+# eyedroppeR <img src='dev/images/hex-amatic.png' align="right" height="240" />
 
 There are fancy ways to extract colours from images but sometimes it’s
 easier if you could simply click on the image and choose the colours you
