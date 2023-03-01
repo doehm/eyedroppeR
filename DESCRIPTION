@@ -19,11 +19,10 @@ Imports:
   glue,
   seecolor,
   ggpath,
-  ggpubr,
   magick,
-  patchwork,
   stringr,
-  utils
+  utils,
+  gridExtra
 License: MIT + file LICENSE
 URL: https://github.com/doehm/eyedroppeR
 BugReports: https://github.com/doehm/eyedroppeR/issues

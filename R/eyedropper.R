@@ -33,7 +33,7 @@ utils::globalVariables(c("x", "y"))
 #' @importFrom ggpath geom_from_path
 #' @importFrom stringr str_remove str_split
 #' @importFrom stats kmeans
-#' @import patchwork
+#' @importFrom gridExtra grid.arrange
 #'
 #' @examplesIf FALSE
 #' # image from https://colorpalettes.net/color-palette-1781/
@@ -51,7 +51,7 @@ eyedropper <- function(n, img_path = NULL) {
   tryCatch(
     {print(
       ggplot() +
-        ggpubr::background_image(image_read(img_path))
+        annotation_raster(image_read(img_path), xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
     )},
     error = function(e) stop(err_bad_link)
   )
@@ -79,13 +79,13 @@ eyedropper <- function(n, img_path = NULL) {
   print_color(pal)
   cat(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
 
-  g1 <- show_pal(pal)
-
-  g2 <- ggplot() +
+  g1 <- ggplot() +
     geom_from_path(aes(0, 0, path = img_path), width = 0.9) +
     theme_void()
 
-  print(g2 + g1)
+  g2 <- show_pal(pal)
+
+  grid.arrange(g1, g2, nrow = 1)
 
   pal
 
@@ -129,17 +129,18 @@ show_pal <- function(pal) {
 sort_pal <- function(pal, n = NULL) {
   print(show_pal(pal))
   if(is.null(n)) n <- length(pal)
-  cat(glue("Click {n} colours in the desired order\n"))
+  cat(glue("Click {n} colours in the desired order\n\n"))
   pos_ls <- list()
   for(k in 1:n) {
-    pos_ls[[k]] <- grid::grid.locator(unit = "npc")
+    pos_ls[[k]] <- grid.locator(unit = "npc")
   }
 
   id <- as.numeric(map_chr(pos_ls, "x"))
   new_pal <- floor(id*length(pal)) + 1
   pal <- pal[new_pal]
   print(show_pal(pal))
-  cat(paste0("\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
+  print_color(pal)
+  cat(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
 
   pal
 
@@ -155,8 +156,6 @@ sort_pal <- function(pal, n = NULL) {
 #' @param n Number of colours to extract
 #' @param img_path Path to image. If `NULL` the function will read from the clipboard
 #'
-#' @importFrom purrr map_chr
-#'
 #' @return Returns a character vector of hex codes
 #' @export
 #'
@@ -171,7 +170,7 @@ extract_pal <- function(n, img_path = NULL) {
   tryCatch(
     {print(
       ggplot() +
-        ggpubr::background_image(image_read(img_path))
+        annotation_raster(image_read(img_path), xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
     )},
     error = function(e) stop(err_bad_link)
   )
@@ -203,7 +202,7 @@ extract_pal <- function(n, img_path = NULL) {
 
   g2 <- show_pal(pal)
 
-  print(g1 + g2)
+  grid.arrange(g1, g2, nrow = 1)
 
   pal
 
