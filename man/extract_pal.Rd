@@ -4,7 +4,7 @@
 \alias{extract_pal}
 \title{Extracts palette from an image}
 \usage{
-extract_pal(n, img_path = NULL)
+extract_pal(n, img_path)
 }
 \arguments{
 \item{n}{Number of colours to extract}

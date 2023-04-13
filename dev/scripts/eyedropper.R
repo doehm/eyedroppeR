@@ -15,7 +15,7 @@ utils::globalVariables(c("x", "y"))
 #'   \item{Find the image you want to pick colours from online.}
 #'   \item{Right-click and 'copy image address'.}
 #'   \item{Choose how many colours to pick e.g. \code{n = 5}.}
-#'   \item{Run \code{pal <- eyedropper(n = 5, img_path = 'paste-image-path-here')}.}
+#'   \item{Run \code{pal <- eyedropper(n = 5)}. The function will read the copied address from the clipboard.}
 #'   \item{Click 5 areas of the image. The image will be stretched to the borders of the window, but that's OK.}
 #'   \item{Done! Copy the returned string and add it to you script and start using \code{pal}}
 #' }
@@ -43,6 +43,8 @@ utils::globalVariables(c("x", "y"))
 #'
 #' pal
 eyedropper <- function(n, img_path = NULL) {
+
+  # if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
@@ -158,9 +160,11 @@ sort_pal <- function(pal, n = NULL) {
 #' @examplesIf FALSE
 #' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #' extract_pal(5, path)
-extract_pal <- function(n, img_path) {
+extract_pal <- function(n, img_path = NULL) {
 
-  err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
+  if(is.null(img_path)) img_path <- read.table(text = readClipboard())[1,1]
+
+  err_bad_link <- simpleError("Incorrect path on clipboard. Please copy address again or call manually")
   tryCatch(
     {print(
       ggplot() +

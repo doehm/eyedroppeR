@@ -26,7 +26,7 @@ Use \code{eyedropper} with the following steps:
   \item{Find the image you want to pick colours from online.}
   \item{Right-click and 'copy image address'.}
   \item{Choose how many colours to pick e.g. \code{n = 5}.}
-  \item{Run \code{pal <- eyedropper(n = 5)}. The function will read the copied address from the clipboard.}
+  \item{Run \code{pal <- eyedropper(n = 5, img_path = 'paste-image-path-here')}.}
   \item{Click 5 areas of the image. The image will be stretched to the borders of the window, but that's OK.}
   \item{Done! Copy the returned string and add it to you script and start using \code{pal}}
 }

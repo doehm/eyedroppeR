@@ -21,7 +21,6 @@ Imports:
   ggpath,
   magick,
   stringr,
-  utils,
   gridExtra
 License: MIT + file LICENSE
 URL: https://github.com/doehm/eyedroppeR
