@@ -4,12 +4,14 @@
 \alias{extract_pal}
 \title{Extracts palette from an image}
 \usage{
-extract_pal(n, img_path)
+extract_pal(n, img_path, sort = "manual")
 }
 \arguments{
 \item{n}{Number of colours to extract}
 
 \item{img_path}{Path to image. If `NULL` the function will read from the clipboard}
+
+\item{sort}{Sort method. Either 'manual' or 'auto'}
 }
 \value{
 Returns a character vector of hex codes
@@ -20,8 +22,8 @@ must specify the number of clusters. The cluster centroids become the palette va
 The function will ask the user to sort the palette values after clustering
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
 path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 extract_pal(5, path)
-\dontshow{\}) # examplesIf}
+}
 }

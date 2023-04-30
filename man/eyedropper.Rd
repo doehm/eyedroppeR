@@ -32,7 +32,8 @@ Use \code{eyedropper} with the following steps:
 }
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+
 # image from https://colorpalettes.net/color-palette-1781/
 path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 
@@ -40,5 +41,6 @@ path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-
 pal <- eyedropper(n = 5, path)
 
 pal
-\dontshow{\}) # examplesIf}
+
+}
 }

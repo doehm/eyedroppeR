@@ -1,7 +1,7 @@
 Package: eyedroppeR
 Type: Package
 Title: Extract Hex Codes by Clicking an Image
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
   c(person(given = "Daniel",
            family = "Oehm",
@@ -21,7 +21,8 @@ Imports:
   ggpath,
   magick,
   stringr,
-  gridExtra
+  gridExtra,
+  crayon
 License: MIT + file LICENSE
 URL: https://github.com/doehm/eyedroppeR
 BugReports: https://github.com/doehm/eyedroppeR/issues

@@ -33,8 +33,10 @@ utils::globalVariables(c("x", "y"))
 #' @importFrom stringr str_remove str_split
 #' @importFrom stats kmeans
 #' @importFrom gridExtra grid.arrange
+#' @importFrom crayon white
 #'
-#' @examplesIf FALSE
+#' @examples \donttest{
+#'
 #' # image from https://colorpalettes.net/color-palette-1781/
 #' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #'
@@ -42,6 +44,8 @@ utils::globalVariables(c("x", "y"))
 #' pal <- eyedropper(n = 5, path)
 #'
 #' pal
+#'
+#' }
 eyedropper <- function(n, img_path = NULL) {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
@@ -54,12 +58,12 @@ eyedropper <- function(n, img_path = NULL) {
   )
 
   eye_ls <- list()
-  cat("\nClick on image to select colours\n")
+  message(white("\nClick on image to select colours\n"))
   for(k in 1:n) {
-    cat(glue("Colours selected: {k-1}/{n}\r"))
+    message(white(glue("Colours selected: {k-1}/{n}\r")))
     eye_ls[[k]] <- grid.locator(unit = "npc")
   }
-  cat(glue("Colours selected: {n}/{n}"))
+  message(white(glue("Colours selected: {n}/{n}")))
 
   img_dat <- image_data(image_read(img_path))
   dims <- dim(img_dat)
@@ -73,7 +77,7 @@ eyedropper <- function(n, img_path = NULL) {
   })
 
   print_color(pal)
-  cat(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
+  message(white(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n")))
 
   g1 <- ggplot() +
     geom_from_path(aes(0, 0, path = img_path), width = 0.9) +
@@ -103,7 +107,8 @@ eyedropper <- function(n, img_path = NULL) {
 show_pal <- function(pal) {
   ggplot(data.frame(x = 1:length(pal),y = 1)) +
     geom_col(aes(x, y), fill = pal, width = 1) +
-    theme_void()
+    theme_void() +
+    theme(plot.margin = margin(l=-38,r=-38,t=-20,b=-20))
 }
 
 
@@ -119,24 +124,26 @@ show_pal <- function(pal) {
 #' @return Character vector
 #' @export
 #'
-#' @examplesIf FALSE
+#' @examples \donttest{
 #' pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
 #' sort_pal(pal)
+#' }
 sort_pal <- function(pal, n = NULL) {
   print(show_pal(pal))
   if(is.null(n)) n <- length(pal)
-  cat(glue("Click {n} colours in the desired order\n\n"))
+  message(white(glue("Click {n} colours in the desired order\n\n")))
   pos_ls <- list()
   for(k in 1:n) {
     pos_ls[[k]] <- grid.locator(unit = "npc")
   }
 
-  id <- as.numeric(map_chr(pos_ls, "x"))
-  new_pal <- floor(id*length(pal)) + 1
-  pal <- pal[new_pal]
+  id <- map_dbl(pos_ls, ~as.numeric(.x$x))
+  # new_pal_order <- sort(id, index = TRUE)$ix
+  new_pal_order <- floor(id*length(pal)) + 1
+  pal <- pal[new_pal_order]
   print(show_pal(pal))
   print_color(pal)
-  cat(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n"))
+  message(white(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n")))
 
   pal
 
@@ -151,14 +158,16 @@ sort_pal <- function(pal, n = NULL) {
 #'
 #' @param n Number of colours to extract
 #' @param img_path Path to image. If `NULL` the function will read from the clipboard
+#' @param sort Sort method. Either 'manual' or 'auto'
 #'
 #' @return Returns a character vector of hex codes
 #' @export
 #'
-#' @examplesIf FALSE
+#' @examples \donttest{
 #' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
 #' extract_pal(5, path)
-extract_pal <- function(n, img_path) {
+#' }
+extract_pal <- function(n, img_path, sort = "manual") {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
@@ -185,19 +194,44 @@ extract_pal <- function(n, img_path) {
 
   pal <- map_chr(1:n, ~rgb(km[.x,1], km[.x,2], km[.x,3], maxColorValue = 255))
 
-  cat("\nSort palette")
+  message(white("\nSort palette"))
   print(show_pal(pal))
-  nx <- as.numeric(readline("How many colours to pick? "))
-  pal <- sort_pal(pal, n = nx)
 
-  g1 <- ggplot() +
-    geom_from_path(aes(0, 0, path = img_path), width = 0.9) +
-    theme_void()
+  if(sort == "manual") {
+    nx <- as.numeric(readline("How many colours to pick? "))
+    pal <- sort_pal(pal, n = nx)
+  } else {
+    pal <- sort_pal_auto(pal)
+  }
 
-  g2 <- show_pal(pal)
+  g2 <- show_pal(pal) +
+    geom_from_path(aes(length(pal)/2+0.5, 0.5, path = img_path), width = 0.3)
 
-  grid.arrange(g1, g2, nrow = 1)
+  print(g2)
 
   pal
 
+}
+
+#' Auto palette sort
+#'
+#' Automatically sorts the palette. May not give the desired result. If not you
+#' can run `sort_pal()` to manually sort.
+#'
+#' @param .pal Input palette
+#'
+#' @return Returns a character vector of hex codes
+#' @export
+#'
+#' @examples
+#' pal <- sample(colours(), 8)
+#' sort_pal_auto(pal)
+sort_pal_auto <- function(.pal) {
+  rgb <- col2rgb(.pal)
+  tsp <- as.TSP(dist(t(rgb)))
+  sol <- solve_TSP(tsp, control = list(repetitions = 1e3))
+  sorted_pal <- .pal[sol]
+  print(show_pal(sorted_pal))
+  message(white(paste0("\npal <- c('", paste0(.pal, collapse = "', '"), "')\n")))
+  sorted_pal
 }
