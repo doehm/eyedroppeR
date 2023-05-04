@@ -24,7 +24,7 @@ Use `eyedropper` with the following steps:
     following link to the clipboard (right-click \> copy image address).
 
     <!-- <img src='https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png' /> -->
-    <img src='inst/images/hex.png' />
+    <img class='myimg' src='inst/images/hex.png'/>
 
 3.  Choose how many colours to pick e.g. `n = 4`.
 
@@ -37,12 +37,14 @@ Use `eyedropper` with the following steps:
 6.  Done! Copy the returned string and add it to your script and start
     using `pal`.
 
-<img src='dev/images/cat4.png' align="center" height = "360x270"/>
+<img class='myimg' src='dev/images/cat4.png' align="center"/>
 
 <!-- <img src='dev/images/eyedropper.gif' align="center" /> -->
 
-The palette, image saved at the temporary address and the label will
-also be returned by the function.
+The palette, image that is saved at the temporary address, and the label
+will also be returned by the function. It will also output to conosole a
+message that can be copied and pasted directly to your code. That’s the
+best part!
 
 ## Automatically extract palette with `extract_pal`
 
@@ -53,20 +55,18 @@ path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
 extract_pal(8, path, label = "Sunset", sort = "auto")
 ```
 
-<img src='dev/images/sunset.png' align="center" height = "360x270"/>
+<img class='myimg' src='dev/images/sunset.png' align="center"/>
 
-``` r
-sunset <- c('#989CA2', '#BFB8AF', '#E0A880', '#B5937E', '#827167', '#5D534B', '#413933', '#25201C')
+    sunset <- c('#989CA2', '#BFB8AF', '#E0A880', '#B5937E', '#827167', '#5D534B', '#413933', '#25201C')
 
-$label
-[1] "Sunset"
+    $label
+    [1] "Sunset"
 
-$pal
-[1] "#989CA2", "#BFB8AF" "#E0A880" "#B5937E" "#827167" "#5D534B" "#413933" "#25201C" 
+    $pal
+    [1] "#989CA2", "#BFB8AF" "#E0A880" "#B5937E" "#827167" "#5D534B" "#413933" "#25201C" 
 
-$img_path
-[1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\Rtmp6nr45a\\file20f46ed067bf"
-```
+    $img_path
+    [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\Rtmp6nr45a\\file20f46ed067bf"
 
 ## Other functions
 
@@ -75,3 +75,9 @@ $img_path
   colours if you don’t want them all.
 
 - `show_pal`: Simple helper to display the palette.
+
+<style type="text/css">
+.myimg {
+  max-height: 360px;
+}
+</style>
