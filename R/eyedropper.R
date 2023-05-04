@@ -9,6 +9,7 @@ utils::globalVariables(c("x", "y"))
 #' @param n Number of colours to extract from the image
 #' @param img_path Path to image. Can be local or from a URL. If left \code{NULL},
 #' \code{eyedropper} will read the image address directly from the clipboard.
+#' @param label Label for the palette.
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -24,39 +25,62 @@ utils::globalVariables(c("x", "y"))
 #' @export
 #'
 #' @import ggplot2
-#' @importFrom magick image_read image_data
+#' @importFrom magick image_read image_data image_write image_info image_resize
 #' @importFrom purrr map_chr map_dbl reduce
 #' @importFrom grid grid.locator
 #' @importFrom glue glue
 #' @importFrom seecolor print_color
 #' @importFrom ggpath geom_from_path
 #' @importFrom stringr str_remove str_split
-#' @importFrom stats kmeans
+#' @importFrom stats kmeans dist
 #' @importFrom gridExtra grid.arrange
-#' @importFrom crayon white
+#' @importFrom crayon white cyan
+#' @importFrom snakecase to_snake_case
+#' @importFrom TSP as.TSP solve_TSP
+#' @importFrom ggtext geom_richtext
+#' @importFrom grDevices col2rgb
 #'
-#' @examples \donttest{
+#' @examples \dontrun{
 #'
-#' # image from https://colorpalettes.net/color-palette-1781/
-#' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+#' path <- file.path(system.file(package = "eyedroppeR"), "images", "hex.png")
 #'
-#' # Run eyedropper and click on 5 colours
-#' pal <- eyedropper(n = 5, path)
+#' # Run eyedropper and click on 4 colours
+#' pal <- eyedropper(n = 4, path)
 #'
 #' pal
 #'
 #' }
-eyedropper <- function(n, img_path = NULL) {
+eyedropper <- function(n, img_path = NULL, label = NULL) {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
-    {print(
-      ggplot() +
-        annotation_raster(image_read(img_path), xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
-    )},
+    {
+      img <- image_read(img_path)
+      },
     error = function(e) stop(err_bad_link)
   )
 
+  # name palette
+  if(is.null(label)) label <- paste("Palette number", sample(100:999, 1))
+
+  # resize and write image
+  info <- image_info(img)
+  ht <- min(info$height, 800)
+  wd <- info$width*ht/info$height
+  img_rs <- image_resize(img, geometry = paste0(ht, "x", wd))
+  temp <- tempfile()
+  image_write(img_rs, path = temp)
+
+  # plot resized image
+  image_path <- temp
+  print(
+    ggplot() +
+      annotation_raster(
+        image_read(img_path),
+        xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
+  )
+
+  # pick colours
   eye_ls <- list()
   message(white("\nClick on image to select colours\n"))
   for(k in 1:n) {
@@ -65,6 +89,7 @@ eyedropper <- function(n, img_path = NULL) {
   }
   message(white(glue("Colours selected: {n}/{n}")))
 
+  # get image data and extract from image
   img_dat <- image_data(image_read(img_path))
   dims <- dim(img_dat)
 
@@ -76,18 +101,18 @@ eyedropper <- function(n, img_path = NULL) {
     paste0("#", paste0(img_dat[, xpx, ypx][1:3], collapse = ""))
   })
 
-  print_color(pal)
-  message(white(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n")))
+  # print pal to copy + paste
+  pastey(pal, label)
 
-  g1 <- ggplot() +
-    geom_from_path(aes(0, 0, path = img_path), width = 0.9) +
-    theme_void()
+  # make plot output
+  print(make_output(pal, temp, label))
 
-  g2 <- show_pal(pal)
-
-  grid.arrange(g1, g2, nrow = 1)
-
-  pal
+  # return
+  list(
+    label = label,
+    pal = pal,
+    img_path = temp
+  )
 
 }
 
@@ -124,7 +149,7 @@ show_pal <- function(pal) {
 #' @return Character vector
 #' @export
 #'
-#' @examples \donttest{
+#' @examples \dontrun{
 #' pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
 #' sort_pal(pal)
 #' }
@@ -138,12 +163,10 @@ sort_pal <- function(pal, n = NULL) {
   }
 
   id <- map_dbl(pos_ls, ~as.numeric(.x$x))
-  # new_pal_order <- sort(id, index = TRUE)$ix
   new_pal_order <- floor(id*length(pal)) + 1
   pal <- pal[new_pal_order]
   print(show_pal(pal))
-  print_color(pal)
-  message(white(paste0("\n\npal <- c('", paste0(pal, collapse = "', '"), "')\n")))
+  pastey(pal)
 
   pal
 
@@ -159,27 +182,38 @@ sort_pal <- function(pal, n = NULL) {
 #' @param n Number of colours to extract
 #' @param img_path Path to image. If `NULL` the function will read from the clipboard
 #' @param sort Sort method. Either 'manual' or 'auto'
+#' @param label Label for the palette.
 #'
 #' @return Returns a character vector of hex codes
 #' @export
 #'
-#' @examples \donttest{
-#' path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
-#' extract_pal(5, path)
+#' @examples \dontrun{
+#' path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
+#' extract_pal(8, path)
 #' }
-extract_pal <- function(n, img_path, sort = "manual") {
+extract_pal <- function(n, img_path, label = NULL, sort = "auto") {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
-    {print(
-      ggplot() +
-        annotation_raster(image_read(img_path), xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
-    )},
+    {
+      img <- image_read(img_path)
+    },
     error = function(e) stop(err_bad_link)
   )
 
-  img <- image_read(img_path)
-  x <- as.integer(as.array(image_data(img, "rgb")))
+  # name palette
+  if(is.null(label)) label <- paste("Palette number", sample(100:999, 1))
+
+  # resize and write image
+  info <- image_info(img)
+  ht <- min(info$height, 600)
+  wd <- info$width*ht/info$height
+  img_rs <- image_resize(img, geometry = paste0(ht, "x", wd))
+  temp <- tempfile()
+  image_write(img_rs, path = temp)
+
+  # setting array for clustering
+  x <- as.integer(as.array(image_data(img_rs, "rgb")))
   rgb_mat <- matrix(0, nrow = prod(dim(x)[1:2]), ncol = 5)
   k <- 0
   for(i in 1:dim(x)[1]) {
@@ -189,27 +223,30 @@ extract_pal <- function(n, img_path, sort = "manual") {
     }
   }
 
+  # kmeans
   km <- kmeans(rgb_mat[,3:5], n)
   km <- round(km$centers)
 
+  # pal from centers
   pal <- map_chr(1:n, ~rgb(km[.x,1], km[.x,2], km[.x,3], maxColorValue = 255))
 
-  message(white("\nSort palette"))
-  print(show_pal(pal))
-
+  # sort
+  pal <- sort_pal_auto(pal, label)
   if(sort == "manual") {
+    print(show_pal(pal))
     nx <- as.numeric(readline("How many colours to pick? "))
     pal <- sort_pal(pal, n = nx)
-  } else {
-    pal <- sort_pal_auto(pal)
   }
 
-  g2 <- show_pal(pal) +
-    geom_from_path(aes(length(pal)/2+0.5, 0.5, path = img_path), width = 0.3)
+  # make plot output
+  print(make_output(pal, temp, label))
 
-  print(g2)
-
-  pal
+  # return
+  list(
+    label = label,
+    pal = pal,
+    img_path = temp
+  )
 
 }
 
@@ -219,19 +256,57 @@ extract_pal <- function(n, img_path, sort = "manual") {
 #' can run `sort_pal()` to manually sort.
 #'
 #' @param .pal Input palette
+#' @param label Label for the palette.
 #'
 #' @return Returns a character vector of hex codes
 #' @export
 #'
 #' @examples
 #' pal <- sample(colours(), 8)
-#' sort_pal_auto(pal)
-sort_pal_auto <- function(.pal) {
+#' sort_pal_auto(pal, 'test')
+sort_pal_auto <- function(.pal, label) {
   rgb <- col2rgb(.pal)
   tsp <- as.TSP(dist(t(rgb)))
   sol <- solve_TSP(tsp, control = list(repetitions = 1e3))
-  sorted_pal <- .pal[sol]
-  print(show_pal(sorted_pal))
-  message(white(paste0("\npal <- c('", paste0(.pal, collapse = "', '"), "')\n")))
-  sorted_pal
+  .pal <- .pal[sol]
+  x <- colSums(col2rgb(.pal))
+  max_k <- which.max(x)[1]
+  if(max_k != 1) .pal <- .pal[c(max_k:length(.pal), 1:(max_k-1))]
+  print(show_pal(.pal))
+  pastey(.pal, label)
+  .pal
+}
+
+
+#' Makes eyedroppers output
+#'
+#' Plots the palette and places the image and label over the top.
+#'
+#' @param .pal Palette
+#' @param .img_path Image path
+#' @param .label Label
+#'
+#' @return ggplot object
+make_output <- function(.pal, .img_path, .label) {
+  show_pal(.pal) +
+    geom_from_path(aes(length(.pal)/2+0.5, 0.5, path = .img_path), width = 0.4, height = 0.6) +
+    geom_richtext(aes(x = length(.pal), y = 0.1), label = .label, size = 6, fontface = "italic",
+                  hjust = 1, label.colour = NA, fill = "grey90", alpha = 0.25,
+                  label.padding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+                  label.r = unit(0.3, "lines"))
+}
+
+
+#' Copy + Pastable palette vector
+#'
+#' Prints a message to console so you can easily copy and paste the palette
+#'
+#' @param .pal Palette vector
+#' @param .label Label
+#'
+#' @return a message
+#' @export
+pastey <- function(.pal, .label = NULL) {
+  if(is.null(.label)) .label = "pal"
+  message(cyan(paste0("\n", to_snake_case(.label)," <- c('", paste0(.pal, collapse = "', '"), "')\n")))
 }

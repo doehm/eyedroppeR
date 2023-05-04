@@ -14,58 +14,64 @@ codes of the selected pixel all within R.
 devtools::install_github("doehm/eyedroppeR")
 ```
 
-Edit: I’ve removed the dependency on `ggchicklet` since it’s not on CRAN
-
-You may also need to install
-[`ggchicklet`](https://github.com/hrbrmstr/ggchicklet)
-
-``` r
-install.packages("ggchicklet", repos = "https://cinc.rud.is")
-```
-
 ## Usage
 
 Use `eyedropper` with the following steps:
 
 1.  Find the image you want to pick colours from online.
 
-2.  Right-click and ‘copy image address’.
+2.  Right-click and ‘copy image address’. As an example copy the
+    following link to the clipboard (right-click \> copy image address).
 
-    2.a As an example copy the following link to the clipboard
-    (right-click \> copy image address).
+    <!-- <img src='https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png' /> -->
+    <img src='inst/images/hex.png' />
 
-    <img src='https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png' />
+3.  Choose how many colours to pick e.g. `n = 4`.
 
-3.  Choose how many colours to pick e.g. `n = 5`.
+4.  Run
+    `eyedropper(n = 4, img_path = '<paste address here>', label = "Spectrum")`.
 
-4.  Run `pal <- eyedropper(n = 5)`.
-
-    4.a. `eyedropper` will read the copied address from the clipboard.
-    Note: This will only work on Windows machines. For other OS’ you’ll
-    just need to paste the URL in manually to `img_path` argument.
-
-    4.b. If you have a local file or a saved `path` you can reference it
-    directly with `pal <- eyedropper(n = 5, img_path = path)`
-
-5.  Click the 5 desired colours. The image will be stretched to the
+5.  Click the 4 desired colours. The image will be stretched to the
     borders of the window, but that’s OK.
 
 6.  Done! Copy the returned string and add it to your script and start
     using `pal`.
 
-<!-- <img src='dev/images/cheese.png' align="center"/> -->
+<img src='dev/images/cat4.png' align="center" height = "360x270"/>
 
-<img src='dev/images/eyedropper.gif' align="center" />
+<!-- <img src='dev/images/eyedropper.gif' align="center" /> -->
+
+The palette, image saved at the temporary address and the label will
+also be returned by the function.
+
+## Automatically extract palette with `extract_pal`
+
+``` r
+library(eyedroppeR)
+
+path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
+extract_pal(8, path, label = "Sunset", sort = "auto")
+```
+
+<img src='dev/images/sunset.png' align="center" height = "360x270"/>
+
+``` r
+sunset <- c('#989CA2', '#BFB8AF', '#E0A880', '#B5937E', '#827167', '#5D534B', '#413933', '#25201C')
+
+$label
+[1] "Sunset"
+
+$pal
+[1] "#989CA2", "#BFB8AF" "#E0A880" "#B5937E" "#827167" "#5D534B" "#413933" "#25201C" 
+
+$img_path
+[1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\Rtmp6nr45a\\file20f46ed067bf"
+```
 
 ## Other functions
 
 - `sort_pal`: Allows you to manually sort a palette by clicking on the
   colours in order. It also allows you to select a specified number of
   colours if you don’t want them all.
-
-- `extract_pal`: Automatically selects a specified number of colours
-  using a clustering algorithm. It will read the image path from the
-  clipboard as well and allow you to sort the colours after they are
-  extracted.
 
 - `show_pal`: Simple helper to display the palette.

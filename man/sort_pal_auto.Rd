@@ -4,10 +4,12 @@
 \alias{sort_pal_auto}
 \title{Auto palette sort}
 \usage{
-sort_pal_auto(.pal)
+sort_pal_auto(.pal, label)
 }
 \arguments{
 \item{.pal}{Input palette}
+
+\item{label}{Label for the palette.}
 }
 \value{
 Returns a character vector of hex codes
@@ -18,5 +20,5 @@ can run `sort_pal()` to manually sort.
 }
 \examples{
 pal <- sample(colours(), 8)
-sort_pal_auto(pal)
+sort_pal_auto(pal, 'test')
 }

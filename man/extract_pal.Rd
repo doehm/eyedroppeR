@@ -4,12 +4,14 @@
 \alias{extract_pal}
 \title{Extracts palette from an image}
 \usage{
-extract_pal(n, img_path, sort = "manual")
+extract_pal(n, img_path, label = NULL, sort = "auto")
 }
 \arguments{
 \item{n}{Number of colours to extract}
 
 \item{img_path}{Path to image. If `NULL` the function will read from the clipboard}
+
+\item{label}{Label for the palette.}
 
 \item{sort}{Sort method. Either 'manual' or 'auto'}
 }
@@ -22,8 +24,8 @@ must specify the number of clusters. The cluster centroids become the palette va
 The function will ask the user to sort the palette values after clustering
 }
 \examples{
-\donttest{
-path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
-extract_pal(5, path)
+\dontrun{
+path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
+extract_pal(8, path)
 }
 }

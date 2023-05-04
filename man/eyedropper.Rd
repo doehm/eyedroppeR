@@ -4,13 +4,15 @@
 \alias{eyedropper}
 \title{Eyedropper}
 \usage{
-eyedropper(n, img_path = NULL)
+eyedropper(n, img_path = NULL, label = NULL)
 }
 \arguments{
 \item{n}{Number of colours to extract from the image}
 
 \item{img_path}{Path to image. Can be local or from a URL. If left \code{NULL},
 \code{eyedropper} will read the image address directly from the clipboard.}
+
+\item{label}{Label for the palette.}
 }
 \value{
 A character vector of hex codes
@@ -32,13 +34,12 @@ Use \code{eyedropper} with the following steps:
 }
 }
 \examples{
-\donttest{
+\dontrun{
 
-# image from https://colorpalettes.net/color-palette-1781/
-path <- "https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png"
+path <- file.path(system.file(package = "eyedroppeR"), "images", "hex.png")
 
-# Run eyedropper and click on 5 colours
-pal <- eyedropper(n = 5, path)
+# Run eyedropper and click on 4 colours
+pal <- eyedropper(n = 4, path)
 
 pal
 

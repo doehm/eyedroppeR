@@ -22,7 +22,10 @@ Imports:
   magick,
   stringr,
   gridExtra,
-  crayon
+  crayon,
+  snakecase,
+  ggtext,
+  TSP
 License: MIT + file LICENSE
 URL: https://github.com/doehm/eyedroppeR
 BugReports: https://github.com/doehm/eyedroppeR/issues
