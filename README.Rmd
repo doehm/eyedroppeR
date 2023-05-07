@@ -22,7 +22,7 @@ Use `eyedropper` with the following steps:
 2. Right-click and 'copy image address'. As an example copy the following link to the clipboard (right-click > copy image address).
     
     <!-- <img src='https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png' /> -->
-    <img class='myimg' src='inst/images/hex.png'/>
+    <img class='myimg' src='inst/images/hex.png'  style='max-height:360px'/>
 
 3. Choose how many colours to pick e.g. `n = 4`.
 4. Run `eyedropper(n = 4, img_path = '<paste address here>', label = "Spectrum")`. 
@@ -30,7 +30,7 @@ Use `eyedropper` with the following steps:
 6. Done! Copy the returned string and add it to your script and start using `pal`.
 
 
-<img class='myimg' src='dev/images/cat4.png' align="center"/>
+<img class='myimg' src='dev/images/cat4.png' align="center" style='max-height:360px'/>
 
 <!-- <img src='dev/images/eyedropper.gif' align="center" /> -->
 
@@ -49,7 +49,7 @@ path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
 extract_pal(8, path, label = "Sunset", sort = "auto")
 
 ```
-<img class='myimg' src='dev/images/sunset.png' align="center"/>
+<img class='myimg' src='dev/images/sunset.png' align="center" style='max-height:360px'/>
 
 
 ```
@@ -72,7 +72,7 @@ $img_path
 * `show_pal`: Simple helper to display the palette.
 
 
-```{css, echo = FALSE}
+```{css, echo = FALSE, include = FALSE}
 .myimg {
   max-height: 360px;
 }
