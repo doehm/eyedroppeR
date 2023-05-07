@@ -24,7 +24,7 @@ Use `eyedropper` with the following steps:
     following link to the clipboard (right-click \> copy image address).
 
     <!-- <img src='https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png' /> -->
-    <img class='myimg' src='inst/images/hex.png'  style='max-height:360px'/>
+    <img class='myimg' src='inst/images/hex.png'/>
 
 3.  Choose how many colours to pick e.g. `n = 4`.
 
@@ -37,7 +37,7 @@ Use `eyedropper` with the following steps:
 6.  Done! Copy the returned string and add it to your script and start
     using `pal`.
 
-<img class='myimg' src='dev/images/cat4.png' align="center" style='max-height:360px'/>
+<img class='myimg' src='dev/images/cat4.png'/>
 
 <!-- <img src='dev/images/eyedropper.gif' align="center" /> -->
 
@@ -55,7 +55,7 @@ path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
 extract_pal(8, path, label = "Sunset", sort = "auto")
 ```
 
-<img class='myimg' src='dev/images/sunset.png' align="center" style='max-height:360px'/>
+<img class='myimg' src='dev/images/sunset.png'/>
 
     sunset <- c('#989CA2', '#BFB8AF', '#E0A880', '#B5937E', '#827167', '#5D534B', '#413933', '#25201C')
 
@@ -75,3 +75,11 @@ extract_pal(8, path, label = "Sunset", sort = "auto")
   colours if you don’t want them all.
 
 - `show_pal`: Simple helper to display the palette.
+
+<style type="text/css">
+.myimg {
+  max-height: 360px;
+  <!-- height: 360px; -->
+  <!-- width: 240px; -->
+}
+</style>
