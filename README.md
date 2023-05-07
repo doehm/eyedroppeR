@@ -1,11 +1,12 @@
 
-<style type="text/css">
-.myimg {
-  max-height: 480px;
-  <!-- height: 480px; -->
-  <!-- width: 360px; -->
-}
-</style>
+<!-- ```{css, echo = FALSE} -->
+<!-- .myimg { -->
+<!--   max-height: 480px; -->
+<!--   <!-- height: 480px; -->
+
+–\> <!--   <!-- width: 360px; --> –\> <!-- } --> <!-- ``` -->
+
+<style type='text/css'> .myimg { max-height: 480px; } </style>
 
 # eyedroppeR <img src='dev/images/hex-amatic.png' align="right" height="240" />
 
