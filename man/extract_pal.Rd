@@ -4,7 +4,14 @@
 \alias{extract_pal}
 \title{Extracts palette from an image}
 \usage{
-extract_pal(n, img_path, label = NULL, sort = "auto")
+extract_pal(
+  n,
+  img_path,
+  label = NULL,
+  sort = "auto",
+  plot_output = TRUE,
+  save_output = FALSE
+)
 }
 \arguments{
 \item{n}{Number of colours to extract}
@@ -14,6 +21,10 @@ extract_pal(n, img_path, label = NULL, sort = "auto")
 \item{label}{Label for the palette.}
 
 \item{sort}{Sort method. Either 'manual' or 'auto'}
+
+\item{plot_output}{logical. Default \code{TRUE}. Plots the output of the extracted palette.}
+
+\item{save_output}{logical. Default \code{FALSE}. Save the output of the extracted palette.}
 }
 \value{
 Returns a character vector of hex codes
@@ -24,8 +35,9 @@ must specify the number of clusters. The cluster centroids become the palette va
 The function will ask the user to sort the palette values after clustering
 }
 \examples{
-\dontrun{
 path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
+
+\dontrun{
 extract_pal(8, path)
 }
 }

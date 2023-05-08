@@ -4,7 +4,7 @@
 \alias{eyedropper}
 \title{Eyedropper}
 \usage{
-eyedropper(n, img_path = NULL, label = NULL)
+eyedropper(n, img_path = NULL, label = NULL, inc_palette = TRUE)
 }
 \arguments{
 \item{n}{Number of colours to extract from the image}
@@ -13,6 +13,9 @@ eyedropper(n, img_path = NULL, label = NULL)
 \code{eyedropper} will read the image address directly from the clipboard.}
 
 \item{label}{Label for the palette.}
+
+\item{inc_palette}{Logical. If \code{TRUE} it will automatically extract a palette
+first and then you can select the desired colours.}
 }
 \value{
 A character vector of hex codes
@@ -30,7 +33,7 @@ Use \code{eyedropper} with the following steps:
   \item{Choose how many colours to pick e.g. \code{n = 5}.}
   \item{Run \code{pal <- eyedropper(n = 5, img_path = 'paste-image-path-here')}.}
   \item{Click 5 areas of the image. The image will be stretched to the borders of the window, but that's OK.}
-  \item{Done! Copy the returned string and add it to you script and start using \code{pal}}
+  \item{Done! Copy the returned string / message and add it to you script and start using \code{pal}}
 }
 }
 \examples{
