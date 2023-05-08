@@ -33,7 +33,7 @@ Use `eyedropper` with the following steps:
 
     <img src='dev/images/sunset-south-coast-output-s.png'/>
 
-The palette, image that is saved at the temporary address, and the label will also be returned by the function. It will also output to conosole a message that can be copied and pasted directly to your code. That's the best part!
+The palette, image that is saved at the temporary address, and the label will also be returned by the function. It will also output to console a message that can be copied and pasted directly to your code. That's the best part!
 
 
 ## Automatically extract a palette with `extract_pal`
