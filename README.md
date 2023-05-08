@@ -23,50 +23,54 @@ Use `eyedropper` with the following steps:
 2.  Right-click and ‘copy image address’. As an example copy the
     following link to the clipboard (right-click \> copy image address).
 
-    <!-- <img src='https://colorpalettes.net/wp-content/uploads/2015/05/cvetovaya-palitra-1781.png' /> -->
-    <img src='inst/images/hex.png'/>
+    <img src='dev/images/sunset-sampler-s.png'/>
 
-3.  Choose how many colours to pick e.g. `n = 4`.
+3.  Choose how many colours to pick e.g. `n = 8`.
 
 4.  Run
-    `eyedropper(n = 4, img_path = '<paste address here>', label = "Spectrum")`.
+    `eyedropper(n = 8, img_path = '<paste address here>', label = "Mountains in Autumn")`.
 
-5.  Click the 4 desired colours. The image will be stretched to the
-    borders of the window, but that’s OK.
+5.  Click the 8 desired colours. You can click on either the image
+    itself or the swatch at the bottom. The image will be stretched to
+    the borders of the window, but that’s OK.
 
 6.  Done! Copy the returned string and add it to your script and start
     using `pal`.
 
-<img src='dev/images/cat4.png'/>
-
-<!-- <img src='dev/images/eyedropper.gif' align="center" /> -->
+    <img src='dev/images/sunset-south-coast-output-s.png'/>
 
 The palette, image that is saved at the temporary address, and the label
 will also be returned by the function. It will also output to conosole a
 message that can be copied and pasted directly to your code. That’s the
 best part!
 
-## Automatically extract palette with `extract_pal`
+## Automatically extract a palette with `extract_pal`
+
+To speed up the process and if you’re not looking for specific colours
+you can run `extract_pal` to automatically select some for you.
 
 ``` r
 library(eyedroppeR)
 
-path <- file.path(system.file(package = "eyedroppeR"), "images", "sunset.png")
-extract_pal(8, path, label = "Sunset", sort = "auto")
+path <- "https://github.com/doehm/eyedroppeR/blob/main/dev/images/belize.jpg?raw=true"
+extract_pal(8, path, label = "Caye Caulker, Belize", sort = "auto")
 ```
 
-<img src='dev/images/sunset.png'/>
+<img src='dev/images/belize-s.jpg'/>
 
-    sunset <- c('#989CA2', '#BFB8AF', '#E0A880', '#B5937E', '#827167', '#5D534B', '#413933', '#25201C')
+    caye_caulker_belize <- c('#2F2C1C', '#75391F', '#D6451F', '#B09269', '#ABADA2', '#DED2B9', '#E8F0EA', '#ADDAF3', '#3B80D0', '#647F7B', '#7E6E4B', '#4C523D')
 
     $label
-    [1] "Sunset"
+    [1] "Caye Caulker, Belize"
 
     $pal
-    [1] "#989CA2", "#BFB8AF" "#E0A880" "#B5937E" "#827167" "#5D534B" "#413933" "#25201C" 
+     [1] "#2F2C1C" "#75391F" "#D6451F" "#B09269" "#ABADA2" "#DED2B9" "#E8F0EA" "#ADDAF3" "#3B80D0" "#647F7B"
+    [11] "#7E6E4B" "#4C523D"
 
     $img_path
-    [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\Rtmp6nr45a\\file20f46ed067bf"
+    [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\RtmpAnLvFs\\file76dc83439fd"
+
+<img src='dev/images/belize-output-s.png'/>
 
 ## Other functions
 

@@ -12,6 +12,7 @@ utils::globalVariables(c("x", "y"))
 #' @param label Label for the palette.
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
+#' @param hires Plot a hi-res image for clicking. Can slow down performance.
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -53,7 +54,7 @@ utils::globalVariables(c("x", "y"))
 #' pal
 #'
 #' }
-eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE) {
+eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE, hires = FALSE) {
 
   # name palette
   if(is.null(label)) label <- paste("Palette number", sample(100:999, 1))
@@ -76,7 +77,7 @@ eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE) {
 
   # resize and write image
   info <- image_info(img)
-  ht <- min(info$height, 600)
+  ht <- min(info$height, 800+hires*9999)
   wd <- info$width*ht/info$height
   img_rs <- image_resize(img, geometry = paste0(ht, "x", wd))
   temp <- tempfile()
@@ -92,6 +93,7 @@ eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE) {
   print(ggplot() +
     annotation_raster(img_selector, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf))
 
+  browser()
   # pick colours
   eye_ls <- list()
   message(white("\nClick on image to select colours\n"))
@@ -148,8 +150,7 @@ show_pal <- function(pal) {
     geom_col(aes(x, y), fill = pal, width = 1) +
     theme_void() +
     theme(
-      plot.background = element_rect(colour = "black"),
-      plot.margin = margin(l=-9,r=-9,t=-20,b=-20)
+      plot.margin = margin(l=-15,r=-15,t=-20,b=-20)
     )
 }
 
