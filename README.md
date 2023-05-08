@@ -23,12 +23,14 @@ Use `eyedropper` with the following steps:
 2.  Right-click and ‘copy image address’. As an example copy the
     following link to the clipboard (right-click \> copy image address).
 
-    <img src='dev/images/sunset-sampler-s.png'/>
+    <img src='dev/images/sunset-south-coast-s.jpg'/>
 
 3.  Choose how many colours to pick e.g. `n = 8`.
 
 4.  Run
     `eyedropper(n = 8, img_path = '<paste address here>', label = "Mountains in Autumn")`.
+
+    <img src='dev/images/sunset-sampler-s.png'/>
 
 5.  Click the 8 desired colours. You can click on either the image
     itself or the swatch at the bottom. The image will be stretched to
