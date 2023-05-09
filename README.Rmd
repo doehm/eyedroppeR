@@ -21,17 +21,17 @@ Use `eyedropper` with the following steps:
 1. Find the image you want to pick colours from online.
 2. Right-click and 'copy image address'. As an example copy the following link to the clipboard (right-click > copy image address).
     
-    <img src='dev/images/sunset-south-coast-s.jpg'/>
+    <img src='dev/images/sunset-south-coast.jpg' height = 270 width = 480/>
 
 3. Choose how many colours to pick e.g. `n = 8`.
 4. Run `eyedropper(n = 8, img_path = '<paste address here>', label = "Sunset on the South Coast")`. 
 
-    <img src='dev/images/sunset-sampler-s.png'/>
+    <img src='dev/images/sunset-sampler.png' height = 270 width = 480/>
 
 5. Click the 8 desired colours. You can click on either the image itself or the swatch at the bottom. The image will be stretched to the borders of the window, but that's OK.
 6. Done! Copy the returned string and add it to your script and start using `pal`.
 
-    <img src='dev/images/sunset-south-coast-output-s.png'/>
+    <img src='dev/images/sunset-south-coast-output.png' height = 270 width = 480.png/>
 
 The palette, image that is saved at the temporary address, and the label will also be returned by the function. It will also output to console a message that can be copied and pasted directly to your code. That's the best part!
 
