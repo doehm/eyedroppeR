@@ -21,7 +21,7 @@ Use `eyedropper` with the following steps:
 1.  Find the image you want to pick colours from online.
 
 2.  Right-click and ‘copy image address’. As an example copy the
-    following link to the clipboard (right-click \> copy image address).
+    following image (right-click \> copy image address).
 
     <img src='dev/images/sunset-south-coast.jpg' height = 270 width = 480/>
 

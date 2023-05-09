@@ -145,7 +145,7 @@ show_pal <- function(pal) {
     geom_col(aes(x, y), fill = pal, width = 1) +
     theme_void() +
     theme(
-      plot.margin = margin(l=-25,r=-25,t=-20,b=-20)
+      plot.margin = margin(l=-12,r=-12,t=-20,b=-20)
     )
 }
 
@@ -326,10 +326,10 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
   temp_output_stack <- tempfile(fileext = ".png")
 
   # saving palette
-  ggsave(plot = show_pal(.pal), filename = temp_output, height = ht/8, width = wd, units = "px")
+  ggsave(plot = show_pal(.pal), filename = temp_output, height = 125, width = 1000, units = "px")
 
   # stack and output
-  img_selector <- image_append(image_scale(c(img_rs, image_read(temp_output)), as.character(ht)), stack = TRUE)
+  img_selector <- image_append(image_scale(c(img_rs, image_read(temp_output)), "1000"), stack = TRUE)
   image_write(img_selector, path = temp_output_stack)
 
   ggplot() +
@@ -340,7 +340,10 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
                   label.r = unit(0.3, "lines")) +
     xlim(0, wd) +
     ylim(0, ht) +
-    theme_void()
+    theme_void() +
+    theme(
+      plot.background = element_blank()
+    )
 
 }
 
