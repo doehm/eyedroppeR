@@ -17,7 +17,6 @@ Imports:
   purrr,
   grid,
   glue,
-  seecolor,
   ggpath,
   magick,
   stringr,

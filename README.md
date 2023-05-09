@@ -28,7 +28,7 @@ Use `eyedropper` with the following steps:
 3.  Choose how many colours to pick e.g. `n = 8`.
 
 4.  Run
-    `eyedropper(n = 8, img_path = '<paste address here>', label = "Mountains in Autumn")`.
+    `eyedropper(n = 8, img_path = '<paste address here>', label = "Sunset on the South Coast")`.
 
     <img src='dev/images/sunset-sampler-s.png'/>
 
@@ -42,7 +42,7 @@ Use `eyedropper` with the following steps:
     <img src='dev/images/sunset-south-coast-output-s.png'/>
 
 The palette, image that is saved at the temporary address, and the label
-will also be returned by the function. It will also output to conosole a
+will also be returned by the function. It will also output to console a
 message that can be copied and pasted directly to your code. That’s the
 best part!
 
@@ -55,22 +55,22 @@ you can run `extract_pal` to automatically select some for you.
 library(eyedroppeR)
 
 path <- "https://github.com/doehm/eyedroppeR/blob/main/dev/images/belize.jpg?raw=true"
-extract_pal(8, path, label = "Caye Caulker, Belize", sort = "auto")
+extract_pal(12, path, label = "Caye Caulker, Belize", sort = "auto")
 ```
 
 <img src='dev/images/belize-s.jpg'/>
 
-    caye_caulker_belize <- c('#2F2C1C', '#75391F', '#D6451F', '#B09269', '#ABADA2', '#DED2B9', '#E8F0EA', '#ADDAF3', '#3B80D0', '#647F7B', '#7E6E4B', '#4C523D')
+    caye_caulker_belize <- c('#2F2C1C', '#75391F', '#D6451F', '#B09268', '#ABAEA2', '#DED3B9', '#E8F0EA', '#ADDAF3', '#3B80D0', '#657F7B', '#7E6E4B', '#4C523D')
 
     $label
     [1] "Caye Caulker, Belize"
 
     $pal
-     [1] "#2F2C1C" "#75391F" "#D6451F" "#B09269" "#ABADA2" "#DED2B9" "#E8F0EA" "#ADDAF3" "#3B80D0" "#647F7B"
+     [1] "#2F2C1C" "#75391F" "#D6451F" "#B09268" "#ABAEA2" "#DED3B9" "#E8F0EA" "#ADDAF3" "#3B80D0" "#657F7B"
     [11] "#7E6E4B" "#4C523D"
 
     $img_path
-    [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\RtmpAnLvFs\\file76dc83439fd"
+    [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\RtmpQtGelS\\file6854916f5f"
 
 <img src='dev/images/belize-output-s.png'/>
 

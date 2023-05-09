@@ -12,7 +12,7 @@ utils::globalVariables(c("x", "y"))
 #' @param label Label for the palette.
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
-#' @param hires Plot a hi-res image for clicking. Can slow down performance.
+#' @param hi_res Plot a hi-res image for clicking. Can slow down performance.
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -32,7 +32,6 @@ utils::globalVariables(c("x", "y"))
 #' @importFrom purrr map_chr map_dbl reduce
 #' @importFrom grid grid.locator
 #' @importFrom glue glue
-#' @importFrom seecolor print_color
 #' @importFrom ggpath geom_from_path
 #' @importFrom stringr str_remove str_split
 #' @importFrom stats kmeans dist
@@ -54,7 +53,7 @@ utils::globalVariables(c("x", "y"))
 #' pal
 #'
 #' }
-eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE, hires = FALSE) {
+eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE, hi_res = FALSE) {
 
   # name palette
   if(is.null(label)) label <- paste("Palette number", sample(100:999, 1))
@@ -77,23 +76,19 @@ eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE, hir
 
   # resize and write image
   info <- image_info(img)
-  ht <- min(info$height, 800+hires*9999)
+  ht <- min(info$height, 800+hi_res*9999)
   wd <- info$width*ht/info$height
   img_rs <- image_resize(img, geometry = paste0(ht, "x", wd))
   temp <- tempfile()
   image_write(img_rs, path = temp)
 
   # plot image with extracted palette
-  g1 <- ggplot() +
-    annotation_raster(img_rs, xmin = 1, xmax = wd, ymin = -Inf, ymax = Inf)
-  g2 <- show_pal(ex_pal$pal)
   temp_selector <- tempfile(fileext = ".png")
   ggsave(plot = show_pal(ex_pal$pal), filename = temp_selector, height = ht/10, width = wd, units = "px")
   img_selector <- image_append(image_scale(c(img_rs, image_read(temp_selector)), as.character(ht)), stack = TRUE)
   print(ggplot() +
     annotation_raster(img_selector, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf))
 
-  browser()
   # pick colours
   eye_ls <- list()
   message(white("\nClick on image to select colours\n"))
@@ -105,7 +100,7 @@ eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE, hir
   message(white(glue("Colours selected: {n}/{n}")))
 
   # get image data and extract from image
-  img_dat <- image_data(image_read(temp_selector))
+  img_dat <- image_data(img_selector)
   dims <- dim(img_dat)
 
   pal <- map_chr(eye_ls, ~{
@@ -150,7 +145,7 @@ show_pal <- function(pal) {
     geom_col(aes(x, y), fill = pal, width = 1) +
     theme_void() +
     theme(
-      plot.margin = margin(l=-15,r=-15,t=-20,b=-20)
+      plot.margin = margin(l=-25,r=-25,t=-20,b=-20)
     )
 }
 
@@ -255,7 +250,7 @@ extract_pal <- function(n, img_path, label = NULL, sort = "auto", plot_output = 
 
   # make plot output
   temp_final <- NULL
-  plt <- make_output(NULL, pal, temp, label)
+  plt <- make_output(NULL, pal, img_path, label)
   if(plot_output) print(plt)
   if(save_output) {
     temp_final <- tempfile(fileext = ".png")
@@ -320,12 +315,33 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
     .label <- obj$label
   }
 
-  show_pal(.pal) +
-    geom_from_path(aes(length(.pal)/2+0.5, 0.5, path = .img_path), width = 0.4, height = 0.6) +
-    geom_richtext(aes(x = length(.pal), y = 0.1), label = .label, size = 6, fontface = "italic",
-                  hjust = 1, label.colour = NA, fill = "grey90", alpha = 0.25,
+  # read in image
+  img_rs <- image_read(.img_path)
+  info <- image_info(img_rs)
+  ht <- info$height
+  wd <- info$width
+
+  # temp file for output
+  temp_output <- tempfile(fileext = ".png")
+  temp_output_stack <- tempfile(fileext = ".png")
+
+  # saving palette
+  ggsave(plot = show_pal(.pal), filename = temp_output, height = ht/8, width = wd, units = "px")
+
+  # stack and output
+  img_selector <- image_append(image_scale(c(img_rs, image_read(temp_output)), as.character(ht)), stack = TRUE)
+  image_write(img_selector, path = temp_output_stack)
+
+  ggplot() +
+    geom_from_path(aes(wd/2, ht/2, path = temp_output_stack)) +
+    geom_richtext(aes(x = wd*0.5, y = ht*0.15), label = .label, size = 6, fontface = "italic",
+                  hjust = 0.5, label.colour = NA, fill = "grey90", alpha = 0.80,
                   label.padding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
-                  label.r = unit(0.3, "lines"))
+                  label.r = unit(0.3, "lines")) +
+    xlim(0, wd) +
+    ylim(0, ht) +
+    theme_void()
+
 }
 
 

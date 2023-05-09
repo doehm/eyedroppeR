@@ -4,7 +4,13 @@
 \alias{eyedropper}
 \title{Eyedropper}
 \usage{
-eyedropper(n, img_path = NULL, label = NULL, inc_palette = TRUE, hires = FALSE)
+eyedropper(
+  n,
+  img_path = NULL,
+  label = NULL,
+  inc_palette = TRUE,
+  hi_res = FALSE
+)
 }
 \arguments{
 \item{n}{Number of colours to extract from the image}
@@ -17,7 +23,7 @@ eyedropper(n, img_path = NULL, label = NULL, inc_palette = TRUE, hires = FALSE)
 \item{inc_palette}{Logical. If \code{TRUE} it will automatically extract a palette
 first and then you can select the desired colours.}
 
-\item{hires}{Plot a hi-res image for clicking. Can slow down performance.}
+\item{hi_res}{Plot a hi-res image for clicking. Can slow down performance.}
 }
 \value{
 A character vector of hex codes
