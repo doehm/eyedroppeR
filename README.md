@@ -59,21 +59,24 @@ path <- "https://github.com/doehm/eyedroppeR/blob/main/dev/images/belize.jpg?raw
 extract_pal(12, path, label = "Caye Caulker, Belize", sort = "auto")
 ```
 
-<img src='dev/images/belize-s.jpg'/>
+<img src='dev/images/belize.jpg' height = 270 width = 480/>
 
-    caye_caulker_belize <- c('#2F2C1C', '#75391F', '#D6451F', '#B09268', '#ABAEA2', '#DED3B9', '#E8F0EA', '#ADDAF3', '#3B80D0', '#657F7B', '#7E6E4B', '#4C523D')
+    caye_caulker_belize <- c('#477d7c', '#4f967e', '#a1d6f5', '#cbe8f4', '#f0e4c6', '#d8c09c', '#adae46', '#a6954f', '#e14f16', '#a92613', '#cf4959', '#d78462')
 
     $label
     [1] "Caye Caulker, Belize"
 
     $pal
-     [1] "#2F2C1C" "#75391F" "#D6451F" "#B09268" "#ABAEA2" "#DED3B9" "#E8F0EA" "#ADDAF3" "#3B80D0" "#657F7B"
-    [11] "#7E6E4B" "#4C523D"
+     [1] "#477d7c" "#4f967e" "#a1d6f5" "#cbe8f4" "#f0e4c6" "#d8c09c" "#adae46" "#a6954f" "#e14f16" "#a92613"
+    [11] "#cf4959" "#d78462"
 
     $img_path
-    [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\RtmpQtGelS\\file6854916f5f"
+    [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\RtmpIN1NcN\\file70302f63b83"
 
-<img src='dev/images/belize-output-12.png' height = 300, width = 480/>
+<img src='dev/images/belize-output-12.png' height = 300 width = 480/>
+
+Often you won’t quite get what you’re after and you’ll want to use
+`eyedropper` instead.
 
 ## Other functions
 
