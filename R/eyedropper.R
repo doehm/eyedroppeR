@@ -13,6 +13,7 @@ utils::globalVariables(c("x", "y"))
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
 #' @param hi_res Plot a hi-res image for clicking. Can slow down performance.
+#' @param n_swatches Number of swatches to extract from the image prior to selecting colours.s
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -53,7 +54,14 @@ utils::globalVariables(c("x", "y"))
 #' pal
 #'
 #' }
-eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE, hi_res = FALSE) {
+eyedropper <- function(
+    n,
+    img_path = NULL,
+    label = NULL,
+    inc_palette = TRUE,
+    hi_res = FALSE,
+    n_swatches = 24
+    ) {
 
   # name palette
   if(is.null(label)) label <- paste("Palette number", sample(100:999, 1))
@@ -65,7 +73,7 @@ eyedropper <- function(n, img_path = NULL, label = NULL, inc_palette = TRUE, hi_
     {
       # include palette?
       if(inc_palette) {
-        ex_pal <- suppressMessages(extract_pal(24, img_path, label, plot_output = FALSE, save_output = TRUE))
+        ex_pal <- suppressMessages(extract_pal(n_swatches, img_path, label, plot_output = FALSE, save_output = TRUE))
         img <- image_read(img_path)
       } else {
         img <- image_read(img_path)
@@ -326,7 +334,7 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
   temp_output_stack <- tempfile(fileext = ".png")
 
   # saving palette
-  ggsave(plot = show_pal(.pal), filename = temp_output, height = 125, width = 1000, units = "px")
+  ggsave(plot = show_pal(.pal), filename = temp_output, height = 100, width = 1000, units = "px")
 
   # stack and output
   img_selector <- image_append(image_scale(c(img_rs, image_read(temp_output)), "1000"), stack = TRUE)

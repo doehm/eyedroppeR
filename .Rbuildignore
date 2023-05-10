@@ -1,10 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-dev
 README.Rmd
 README.md
 README_files
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 LICENSE.md
-images/pencil-case

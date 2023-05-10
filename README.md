@@ -18,7 +18,8 @@ devtools::install_github("doehm/eyedroppeR")
 
 Use `eyedropper` with the following steps:
 
-1.  Find the image you want to pick colours from online.
+1.  Find the image you want to pick colours from online. Local images cn
+    be used as well.
 
 2.  Right-click and ‘copy image address’. As an example copy the
     following image (right-click \> copy image address).
@@ -72,7 +73,7 @@ extract_pal(12, path, label = "Caye Caulker, Belize", sort = "auto")
     $img_path
     [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\RtmpQtGelS\\file6854916f5f"
 
-<img src='dev/images/belize-output-s.png'/>
+<img src='dev/images/belize-output-12.png' height = 300, width = 480/>
 
 ## Other functions
 
