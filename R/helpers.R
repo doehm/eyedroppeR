@@ -38,7 +38,8 @@ show_pal <- function(pal) {
 #' url <- "https://github.com/doehm/eyedroppeR/raw/main/dev/images/sunset-south-coast.jpg"
 #' x <- extract_pal(4, url)
 #' swatch(x$pal, url)
-swatch <- function(pal, img, family = "Poppins", .padding = 0) {
+swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0) {
+
   if(length(pal) %in% c(5,6)) {
     ncols <- 3
   } else if(length(pal) <= 3){
@@ -51,7 +52,7 @@ swatch <- function(pal, img, family = "Poppins", .padding = 0) {
 
   nrows <- ceiling(length(pal)/ncols)
 
-  img_style <- "border-radius: 50%; box-shadow: 0 0 10px 2px rgba(0,0,0,0.3);"
+  img_style <- "border-radius: 50%; box-shadow: 0 0 10px 2px rgba(0,0,0,0.3); object-fit: cover;"
 
   dot_ <- function(bg) {
 
@@ -69,10 +70,21 @@ swatch <- function(pal, img, family = "Poppins", .padding = 0) {
     "\\n[:space:]")
   }
 
-  if(!str_detect(img, "http")) {
-    uri <- gt:::get_image_uri(img)
-  } else {
-    uri <- img
+  img_header <- function(tbl) {
+    if(is.null(img)) {
+      out <- tbl
+    } else {
+      out <- tbl |>
+        tab_header(title = gt::html(glue("{.padding}<img src='{uri}' width=300 height = 300 style='{img_style}';>")))
+    }
+  }
+
+  if(!is.null(img)) {
+    if(!str_detect(img, "http")) {
+      uri <- gt:::get_image_uri(img)
+    } else {
+      uri <- img
+    }
   }
 
   tibble(
@@ -113,7 +125,7 @@ swatch <- function(pal, img, family = "Poppins", .padding = 0) {
         })
       }
     ) |>
-    tab_header(title = gt::html(glue("{.padding}<img src='{uri}' width=300 height = 300 style='{img_style}';>"))) |>
+    img_header() |>
     tab_options(
       column_labels.font.size = 0,
       table_body.hlines.width = px(0),

@@ -19,8 +19,8 @@ swatch(pal, x$eyedropper$img_path, .padding = 4)
 
 swatch(pal, "C:\\Users\\danie\\AppData\\Local\\Temp\\RtmpKan5Pm\\file64a02c6c5ea7", .padding = 4)
 
-x <- extract_pal(8, "https://scontent-atl3-1.cdninstagram.com/v/t51.29350-15/452157403_1408150999872775_7030408167239539246_n.jpg?stp=dst-jpg_e35&cb=9ad74b5e-a62970cb&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE3ODMuc2RyLmYyOTM1MC5wanBnX3E4MF8wNzEwIn0&_nc_ht=scontent-atl3-1.cdninstagram.com&_nc_cat=107&_nc_ohc=CighHKzCXAsQ7kNvgEGLSx3&gid=c5aa8e4b7c634097b8e58fcbf73bf95c&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=MzQxNzA3Mzg1OTQxNTIwNjUxNA%3D%3D.2-ccb7-5&oh=00_AYAPgV5jrOsz9PYWIUyYVMxW7CBnQJdcRgtEWAtspZp7vg&oe=66A3B3AA&_nc_sid=10d13b")
-swatch(x$pal[c(1:5, 8:6)], x$img_path, .padding = 4)
+x <- extract_pal(6, "https://i.ebayimg.com/images/g/ZJIAAOSwvsVkPy-Z/s-l1600.jpg")
+swatch(x$pal, x$img_path, .padding = 1)
 
 pal <- x$pal[c(1, 3, 6, 8)]
 ft <- "poppins"
