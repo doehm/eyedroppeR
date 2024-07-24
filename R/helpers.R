@@ -229,10 +229,10 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
 
   ggplot() +
     geom_from_path(aes(wd/2, ht/2, path = temp_output_stack)) +
-    geom_richtext(aes(x = wd*0.5, y = ht*0.15), label = .label, size = 8, fontface = "italic",
-                  hjust = 0.5, label.colour = NA, fill = "grey90", alpha = 0.80,
-                  label.padding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
-                  label.r = unit(0.3, "lines")) +
+    # geom_richtext(aes(x = wd*0.5, y = ht*0.15), label = .label, size = 8, fontface = "italic",
+    #               hjust = 0.5, label.colour = NA, fill = "grey90", alpha = 0.80,
+    #               label.padding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+    #               label.r = unit(0.3, "lines")) +
     xlim(0, wd) +
     ylim(0, ht) +
     theme_void() +

@@ -62,7 +62,7 @@ eyedropper <- function(
     ) {
 
   # name palette
-  if(is.null(label)) label <- paste("Palette number", sample(100:999, 1))
+  if(is.null(label)) label <- "pal"
 
   if(is.null(img_path)) img_path <- file.path(system.file(package = "eyedroppeR"), "images", "hex.png")
 
@@ -112,7 +112,8 @@ eyedropper <- function(
 
   pal <- map_chr(eye_ls, ~{
     coords <- as.numeric(str_remove(reduce(.x, c), "npc"))
-    coords[2] <- ceiling(coords[2])-coords[2]
+    # coords[2] <- ceiling(coords[2])-coords[2]
+    coords[2] <- 1-coords[2]+0.5
     xpx <- round(coords[1]*dims[2])
     ypx <- round(coords[2]*dims[3])
     paste0("#", paste0(img_dat[, xpx, ypx][1:3], collapse = ""))
@@ -127,7 +128,6 @@ eyedropper <- function(
 
   # return
   list(
-    label = label,
     pal = pal,
     img_path = img_path
   )
