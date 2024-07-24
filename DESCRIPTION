@@ -24,7 +24,11 @@ Imports:
   crayon,
   snakecase,
   ggtext,
-  TSP
+  TSP,
+  tidyr,
+  gt,
+  openai,
+  dplyr
 License: MIT + file LICENSE
 URL: https://github.com/doehm/eyedroppeR
 BugReports: https://github.com/doehm/eyedroppeR/issues

@@ -1,4 +1,4 @@
-utils::globalVariables(c("x", "y"))
+utils::globalVariables(c("x", "y", "id"))
 
 #' Eyedropper
 #'
@@ -12,7 +12,6 @@ utils::globalVariables(c("x", "y"))
 #' @param label Label for the palette.
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
-#' @param hi_res Logical. Plot a hi-res image for clicking. Can't be any greater than the original size. Can slow down performance. Default \code{FALSE}.
 #' @param n_swatches Number of swatches to extract from the image prior to selecting colours.s
 #'
 #' @details Use \code{eyedropper} with the following steps:
@@ -59,7 +58,6 @@ eyedropper <- function(
     img_path = NULL,
     label = NULL,
     inc_palette = TRUE,
-    hi_res = FALSE,
     n_swatches = 24
     ) {
 
@@ -83,6 +81,7 @@ eyedropper <- function(
   )
 
   # resize and write image
+  hi_res <- FALSE
   info <- image_info(img)
   ht <- min(info$height, 800+hi_res*9999)
   wd <- info$width*ht/info$height
@@ -200,12 +199,12 @@ extract_pal <- function(n, img_path, label = NULL, sort = "auto", plot_output = 
 
   # make plot output
   temp_final <- NULL
-  plt <- make_output(NULL, pal, img_path, label)
-  if(plot_output) print(plt)
-  if(save_output) {
-    temp_final <- tempfile(fileext = ".png")
-    ggplot2::ggsave(plot = plt, filename = temp_final, height = 4, width = 6)
-  }
+  # plt <- make_output(NULL, pal, img_path, label)
+  # if(plot_output) print(plt)
+  # if(save_output) {
+  #   temp_final <- tempfile(fileext = ".png")
+  #   ggplot2::ggsave(plot = plt, filename = temp_final, height = 4, width = 6)
+  # }
 
   # return
   list(
@@ -216,3 +215,5 @@ extract_pal <- function(n, img_path, label = NULL, sort = "auto", plot_output = 
   )
 
 }
+
+

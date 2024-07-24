@@ -9,7 +9,6 @@ eyedropper(
   img_path = NULL,
   label = NULL,
   inc_palette = TRUE,
-  hi_res = FALSE,
   n_swatches = 24
 )
 }
@@ -23,8 +22,6 @@ eyedropper(
 
 \item{inc_palette}{Logical. If \code{TRUE} it will automatically extract a palette
 first and then you can select the desired colours.}
-
-\item{hi_res}{Logical. Plot a hi-res image for clicking. Can't be any greater than the original size. Can slow down performance. Default \code{FALSE}.}
 
 \item{n_swatches}{Number of swatches to extract from the image prior to selecting colours.s}
 }

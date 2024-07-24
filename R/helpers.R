@@ -19,6 +19,115 @@ show_pal <- function(pal) {
     )
 }
 
+#' Swatch of colour palette
+#'
+#' @param pal Vector of colours
+#' @param img Image address. Either local file or URL
+#' @param family Font family
+#' @param .padding To add whitespace to the top of image
+#'
+#' @return html doc
+#' @export
+#'
+#' @importFrom gt gt tab_style tab_header tab_options cells_body google_font cell_text default_fonts text_transform px
+#' @importFrom tidyr pivot_wider everything
+#' @importFrom stringr str_remove_all str_detect
+#' @import dplyr
+#'
+#' @examples
+#' url <- "https://github.com/doehm/eyedroppeR/raw/main/dev/images/sunset-south-coast.jpg"
+#' x <- extract_pal(4, url)
+#' swatch(x$pal, url)
+swatch <- function(pal, img, family = "Poppins", .padding = 0) {
+  if(length(pal) %in% c(5,6)) {
+    ncols <- 3
+  } else if(length(pal) <= 3){
+    ncols <- length(pal)
+  } else {
+    ncols <- 4
+  }
+
+  .padding <- paste0(rep("<br>", .padding), collapse = "")
+
+  nrows <- ceiling(length(pal)/ncols)
+
+  img_style <- "border-radius: 50%; box-shadow: 0 0 10px 2px rgba(0,0,0,0.3);"
+
+  dot_ <- function(bg) {
+
+    txt <- choose_font_colour(bg)
+
+    str_remove_all(glue("height: 150px;
+    width: 150px;
+    background-color: {bg};
+    color: {txt};
+    font-weight: 400;
+    font-size: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 10px 2px rgba(0,0,0,0.3);"),
+    "\\n[:space:]")
+  }
+
+  if(!str_detect(img, "http")) {
+    uri <- gt:::get_image_uri(img)
+  } else {
+    uri <- img
+  }
+
+  tibble(
+    id =  1:length(pal),
+    pal = pal
+  ) |>
+    mutate(
+      row = ceiling(id/ncols),
+      col = (id-1) %% ncols + 1,
+      col = ifelse(row %% 2 == 0, max(col) - col + 1, col)
+    ) |>
+    select(row, col, pal) |>
+    pivot_wider(id_cols = row, names_from = "col", values_from = "pal") |>
+    select(-row) |>
+    gt() |>
+    tab_style(
+      style = cell_text(
+        font = c(
+          google_font(name = family),
+          default_fonts()
+        )
+      ),
+      locations = cells_body(columns = everything())
+    ) |>
+    text_transform(
+      locations = cells_body(
+        columns = everything()
+      ),
+      fn = function(k, i){
+        col_rgb <- map_chr(1:nrows, ~paste0("rgb(", paste(as.numeric(t(col2rgb(k[.x]))), collapse = ", "), ")"))
+        map_chr(1:nrows, ~{
+          if(is.na(k[.x])) {
+            out <- ""
+          } else {
+            out <- glue("<center><span style='{dot_(k[.x])}'><br>{k[.x]}<br>{col_rgb[.x]}</span></center>")
+          }
+          out
+        })
+      }
+    ) |>
+    tab_header(title = gt::html(glue("{.padding}<img src='{uri}' width=300 height = 300 style='{img_style}';>"))) |>
+    tab_options(
+      column_labels.font.size = 0,
+      table_body.hlines.width = px(0),
+      table_body.border.top.width = px(0),
+      table_body.border.bottom.width = px(0),
+      heading.border.bottom.width = px(0),
+      table.border.bottom.width = px(0),
+      table.border.top.width = px(0),
+      column_labels.border.top.width = px(0),
+      column_labels.border.bottom.width = px(0),
+      data_row.padding = px(10),
+      data_row.padding.horizontal = px(10)
+    )
+}
 
 #' Manually sort a palette
 #'
@@ -120,7 +229,7 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
 
   ggplot() +
     geom_from_path(aes(wd/2, ht/2, path = temp_output_stack)) +
-    geom_richtext(aes(x = wd*0.5, y = ht*0.15), label = .label, size = 6, fontface = "italic",
+    geom_richtext(aes(x = wd*0.5, y = ht*0.15), label = .label, size = 8, fontface = "italic",
                   hjust = 0.5, label.colour = NA, fill = "grey90", alpha = 0.80,
                   label.padding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
                   label.r = unit(0.3, "lines")) +
@@ -145,4 +254,19 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
 pastey <- function(.pal, .label = NULL) {
   if(is.null(.label)) .label = "pal"
   message(cyan(paste0("\n", to_snake_case(.label)," <- c('", paste0(.pal, collapse = "', '"), "')\n")))
+}
+
+
+#' Choose font colour
+#'
+#' @param bg Background
+#' @param light The light text colour
+#' @param dark The dark text colour
+#' @param threshold The threshold for switching
+#'
+#' @return hex code
+choose_font_colour <- function(bg, light = "#ffffff", dark = "#000000", threshold = 170) {
+  x <- drop(c(0.299, 0.587, 0.114) %*% col2rgb(bg) > threshold)
+  out <- ifelse(x, dark, light)
+  ifelse(is.na(bg), light, out)
 }
