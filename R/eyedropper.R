@@ -206,12 +206,14 @@ extract_pal <- function(n, img_path, label = NULL, sort = "auto", plot_output = 
   #   ggplot2::ggsave(plot = plt, filename = temp_final, height = 4, width = 6)
   # }
 
+  print(swatch(pal, temp))
+
   # return
   list(
     label = label,
     pal = pal,
-    img_path = temp,
-    saved_path = temp_final
+    img_path = temp
+    # saved_path = temp_final
   )
 
 }

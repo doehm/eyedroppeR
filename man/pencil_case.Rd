@@ -5,7 +5,7 @@
 \alias{pencil_case}
 \title{Pencil Case}
 \format{
-An object of class \code{list} of length 10.
+An object of class \code{list} of length 18.
 }
 \usage{
 pencil_case

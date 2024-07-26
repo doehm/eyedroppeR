@@ -68,11 +68,34 @@ $img_path
 
 Often you won't quite get what you're after and you'll want to use `eyedropper` instead.
 
+## Use `swatch()` to view a palette
+
+```{r, echo = FALSE}
+suppressPackageStartupMessages(library(eyedroppeR))
+```
+
+
+```{r, eval=FALSE}
+path <- "https://github.com/doehm/eyedroppeR/blob/main/dev/images/belize.jpg?raw=true"
+x <- extract_pal(4, path, sort = "auto")
+
+swatch(x$pal, path)
+```
+
+<img src='dev/images/belize-swatch.jpg' width = 480/>
+
 ## Other functions
 
 * `sort_pal`: Allows you to manually sort a palette by clicking on the colours in order. It also allows you to select a specified number of colours if you don't want them all.
 
-* `show_pal`: Simple helper to display the palette.
+* `show_pencil_case`: There are a bunch of palettes stored in the `pencil_case`. This will plot them all so you can easily choose the one you want.
 
+* `palette`: Helper to read a palette from the `pencil_case`. e.g. `palette(1)`
+
+## Palettes in the `pencil_case`
+
+```{r}
+show_pencil_case()
+```
 
 

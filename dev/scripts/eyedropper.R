@@ -190,7 +190,7 @@ extract_pal <- function(n, img_path = NULL) {
   pal <- map_chr(1:n, ~rgb(km[.x,1], km[.x,2], km[.x,3], maxColorValue = 255))
 
   cat("\nSort palette")
-  print(show_pal(pal))
+  # print(show_pal(pal))
   nx <- as.numeric(readline("How many colours to pick? "))
   pal <- sort_pal(pal, n = nx)
 

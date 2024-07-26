@@ -4,7 +4,14 @@
 \alias{swatch}
 \title{Swatch of colour palette}
 \usage{
-swatch(pal, img, family = "Poppins", .padding = 0)
+swatch(
+  pal,
+  img = NULL,
+  family = "Poppins",
+  .padding = 0,
+  .radius = 50,
+  ncols = NULL
+)
 }
 \arguments{
 \item{pal}{Vector of colours}
@@ -14,6 +21,10 @@ swatch(pal, img, family = "Poppins", .padding = 0)
 \item{family}{Font family}
 
 \item{.padding}{To add whitespace to the top of image}
+
+\item{.radius}{The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.}
+
+\item{ncols}{Number of cols in a row}
 }
 \value{
 html doc

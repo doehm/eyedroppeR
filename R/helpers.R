@@ -25,6 +25,8 @@ show_pal <- function(pal) {
 #' @param img Image address. Either local file or URL
 #' @param family Font family
 #' @param .padding To add whitespace to the top of image
+#' @param .radius The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.
+#' @param ncols Number of cols in a row
 #'
 #' @return html doc
 #' @export
@@ -38,23 +40,25 @@ show_pal <- function(pal) {
 #' url <- "https://github.com/doehm/eyedroppeR/raw/main/dev/images/sunset-south-coast.jpg"
 #' x <- extract_pal(4, url)
 #' swatch(x$pal, url)
-swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0) {
+swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0, .radius = 50, ncols = NULL, img_shadow = TRUE) {
 
-  if(length(pal) %in% c(5,6)) {
-    ncols <- 3
-  } else if(length(pal) <= 3){
-    ncols <- length(pal)
-  } else {
-    ncols <- 4
+  if(is.null(ncols)) {
+    if(length(pal) %in% c(5,6)) {
+      ncols <- 3
+    } else if(length(pal) <= 3){
+      ncols <- length(pal)
+    } else {
+      ncols <- 4
+    }
   }
 
   .padding <- paste0(rep("<br>", .padding), collapse = "")
 
   nrows <- ceiling(length(pal)/ncols)
 
-  img_style <- "border-radius: 50%; box-shadow: 0 0 10px 2px rgba(0,0,0,0.3); object-fit: cover;"
+  img_style <- glue("border-radius: {.radius}%; box-shadow: 0 0 10px 2px rgba(0,0,0,{0.3*img_shadow}); object-fit: cover;")
 
-  dot_ <- function(bg) {
+  dot_ <- function(bg, circle) {
 
     txt <- choose_font_colour(bg)
 
@@ -74,8 +78,15 @@ swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0) {
     if(is.null(img)) {
       out <- tbl
     } else {
+      if(.radius != 50) {
+        info <- image_read(img) |>
+          image_info()
+        wd <- info$width/info$height*300
+      } else {
+        wd <- 300
+      }
       out <- tbl |>
-        tab_header(title = gt::html(glue("{.padding}<img src='{uri}' width=300 height = 300 style='{img_style}';>")))
+        tab_header(title = gt::html(glue("{.padding}<img src='{uri}' width={wd} height=300 style='{img_style}';>")))
     }
   }
 
@@ -119,7 +130,7 @@ swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0) {
           if(is.na(k[.x])) {
             out <- ""
           } else {
-            out <- glue("<center><span style='{dot_(k[.x])}'><br>{k[.x]}<br>{col_rgb[.x]}</span></center>")
+            out <- glue("<center><span style='{dot_(k[.x], .radius)}'><br>{k[.x]}<br>{col_rgb[.x]}</span></center>")
           }
           out
         })
@@ -281,4 +292,17 @@ choose_font_colour <- function(bg, light = "#ffffff", dark = "#000000", threshol
   x <- drop(c(0.299, 0.587, 0.114) %*% col2rgb(bg) > threshold)
   out <- ifelse(x, dark, light)
   ifelse(is.na(bg), light, out)
+}
+
+
+#' Modify the saturation of a colour palette
+#'
+#' @param cols Vector of colours
+#' @param sat Factor to adjust the saturation
+#'
+#' @return
+#' @export
+modify_saturation <- function(cols, sat = 1.2) {
+  X <- diag(c(1, sat, 1)) %*% rgb2hsv(col2rgb(cols))
+  hsv(X[1,], pmin(X[2,], 1), X[3,])
 }
