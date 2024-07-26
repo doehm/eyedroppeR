@@ -82,7 +82,7 @@ x <- extract_pal(4, path, sort = "auto")
 swatch(x$pal, path)
 ```
 
-<img src='dev/images/belize-swatch.jpg' width = 480/>
+<img src='dev/images/belize-swatch.png' width = 720/>
 
 ## Other functions
 
@@ -94,8 +94,8 @@ swatch(x$pal, path)
 
 ## Palettes in the `pencil_case`
 
-```{r}
+```{r, eval=FALSE}
 show_pencil_case()
 ```
 
-
+`r show_pencil_case()`
