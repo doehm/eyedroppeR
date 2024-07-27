@@ -108,6 +108,4 @@ swatch(x$pal, path)
 show_pencil_case()
 ```
 
-<iframe src='dev/html/pencil-case.html' width=1000 height=3100 frameBorder=0>
-
-> </iframe>
+<img src='dev/images/show-pencil-case.png' width = 720/>
