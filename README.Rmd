@@ -98,4 +98,4 @@ swatch(x$pal, path)
 show_pencil_case()
 ```
 
-`r show_pencil_case()`
+<iframe >
