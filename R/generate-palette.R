@@ -13,7 +13,6 @@ set_openai_key <- function(key) {
 #'
 #' @param n Number of colours in the palette
 #' @param prompt Prompt
-#' @param name Name for the palette. If left NULL it will
 #'
 #' @importFrom openai create_image
 #' @importFrom stringr str_length
@@ -22,13 +21,11 @@ set_openai_key <- function(key) {
 #' @export
 #'
 #' @examples
-#' # x <- generate_palette(4, 'colourful balls in a chldrens ball pit', name = 'Ball pit')
-generate_palette <- function(n, prompt, name = NULL) {
+#' # x <- generate_palette(4, 'a trail in a dense rainforest')
+generate_palette <- function(n, prompt) {
   x <- create_image(prompt)
-  if(str_length(prompt) < 30 & is.null(name)) name <- "pal"
-  d <- extract_pal(n, x$data$url, plot_output = TRUE, label = name, save_output = TRUE)
-  # print(image_resize(image_read(d$saved_path), "600x"))
-  print(swatch(d$pal, d$img_path, .padding = 1))
+  d <- extract_pal(n, x$data$url, plot_output = FALSE, save_output = TRUE)
+  print(swatch(d$pal, d$img_path, padding = 1))
   list(
     pal = d$pal,
     eyedropper = d,

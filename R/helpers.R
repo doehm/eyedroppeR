@@ -24,9 +24,10 @@ show_pal <- function(pal) {
 #' @param pal Vector of colours
 #' @param img Image address. Either local file or URL
 #' @param family Font family
-#' @param .padding To add whitespace to the top of image
-#' @param .radius The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.
+#' @param padding To add whitespace to the top of image
+#' @param radius The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.
 #' @param ncols Number of cols in a row
+#' @param img_shadow Logical. Apply a shadow to the feature image output.
 #'
 #' @return html doc
 #' @export
@@ -40,7 +41,7 @@ show_pal <- function(pal) {
 #' url <- "https://github.com/doehm/eyedroppeR/raw/main/dev/images/sunset-south-coast.jpg"
 #' x <- extract_pal(4, url)
 #' swatch(x$pal, url)
-swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0, .radius = 50, ncols = NULL, img_shadow = TRUE) {
+swatch <- function(pal, img = NULL, family = "Poppins", padding = 0, radius = 50, ncols = NULL, img_shadow = TRUE) {
 
   if(is.null(ncols)) {
     if(length(pal) %in% c(5,6)) {
@@ -52,11 +53,11 @@ swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0, .radius = 
     }
   }
 
-  .padding <- paste0(rep("<br>", .padding), collapse = "")
+  padding <- paste0(rep("<br>", padding), collapse = "")
 
   nrows <- ceiling(length(pal)/ncols)
 
-  img_style <- glue("border-radius: {.radius}%; box-shadow: 0 0 10px 2px rgba(0,0,0,{0.3*img_shadow}); object-fit: cover;")
+  img_style <- glue("border-radius: {radius}%; box-shadow: 0 0 10px 2px rgba(0,0,0,{0.3*img_shadow}); object-fit: cover;")
 
   dot_ <- function(bg, circle) {
 
@@ -78,7 +79,7 @@ swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0, .radius = 
     if(is.null(img)) {
       out <- tbl
     } else {
-      if(.radius != 50) {
+      if(radius != 50) {
         info <- image_read(img) |>
           image_info()
         wd <- info$width/info$height*300
@@ -86,7 +87,7 @@ swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0, .radius = 
         wd <- 300
       }
       out <- tbl |>
-        tab_header(title = gt::html(glue("{.padding}<img src='{uri}' width={wd} height=300 style='{img_style}';>")))
+        tab_header(title = gt::html(glue("{padding}<img src='{uri}' width={wd} height=300 style='{img_style}';>")))
     }
   }
 
@@ -130,7 +131,7 @@ swatch <- function(pal, img = NULL, family = "Poppins", .padding = 0, .radius = 
           if(is.na(k[.x])) {
             out <- ""
           } else {
-            out <- glue("<center><span style='{dot_(k[.x], .radius)}'><br>{k[.x]}<br>{col_rgb[.x]}</span></center>")
+            out <- glue("<center><span style='{dot_(k[.x], radius)}'><br>{k[.x]}<br>{col_rgb[.x]}</span></center>")
           }
           out
         })
@@ -222,15 +223,13 @@ sort_pal_auto <- function(.pal, label, plot_output = FALSE) {
 #' @param obj Output from \code{extract_pal} or \code{eyedropper}
 #' @param .pal Palette
 #' @param .img_path Image path
-#' @param .label Label
 #'
 #' @return ggplot object
-make_output <- function(obj = NULL, .pal, .img_path, .label) {
+make_output <- function(obj = NULL, .pal, .img_path) {
 
   if(!is.null(obj)) {
     .pal <- obj$pal
     .img_path <- obj$img_path
-    .label <- obj$label
   }
 
   # read in image
@@ -254,7 +253,7 @@ make_output <- function(obj = NULL, .pal, .img_path, .label) {
     geom_from_path(aes(wd/2, ht/2, path = temp_output_stack)) +
     # geom_richtext(aes(x = wd*0.5, y = ht*0.15), label = .label, size = 8, fontface = "italic",
     #               hjust = 0.5, label.colour = NA, fill = "grey90", alpha = 0.80,
-    #               label.padding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+    #               labelpadding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
     #               label.r = unit(0.3, "lines")) +
     xlim(0, wd) +
     ylim(0, ht) +
@@ -299,6 +298,8 @@ choose_font_colour <- function(bg, light = "#ffffff", dark = "#000000", threshol
 #'
 #' @param cols Vector of colours
 #' @param sat Factor to adjust the saturation
+#'
+#' @importFrom grDevices rgb2hsv hsv
 #'
 #' @return
 #' @export

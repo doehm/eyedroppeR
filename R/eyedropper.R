@@ -1,4 +1,4 @@
-utils::globalVariables(c("x", "y", "id"))
+utils::globalVariables(c("x", "y", "id", "bg", "name"))
 
 #' Eyedropper
 #'
@@ -9,10 +9,10 @@ utils::globalVariables(c("x", "y", "id"))
 #' @param n Number of colours to extract from the image
 #' @param img_path Path to image. Can be local or from a URL. If left \code{NULL},
 #' \code{eyedropper} will read the image address directly from the clipboard.
-#' @param label Label for the palette.
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
 #' @param n_swatches Number of swatches to extract from the image prior to selecting colours.s
+#' @param coord_sys Method for extracting the colour from the graphics window Takes values 1, or 2.  See details for more.
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -23,6 +23,11 @@ utils::globalVariables(c("x", "y", "id"))
 #'   \item{Click 5 areas of the image. The image will be stretched to the borders of the window, but that's OK.}
 #'   \item{Done! Copy the returned string / message and add it to you script and start using \code{pal}}
 #' }
+#'
+#' If the colours returned are not the colours you selected, try setting `coord_sys = 2`. Depending on the OS, resolution or
+#' something else then clicking on the image may return a different set of coordinates. If they are mismatched,
+#' it will return the wrong colours, or it won't work at all. I'm unaware of a way to check the coordinate system
+#' before clicking on the image, so for now I have a toggle.
 #'
 #' @return A character vector of hex codes
 #' @export
@@ -56,22 +61,26 @@ utils::globalVariables(c("x", "y", "id"))
 eyedropper <- function(
     n,
     img_path = NULL,
-    label = NULL,
     inc_palette = TRUE,
-    n_swatches = 24
+    n_swatches = 24,
+    coord_sys = 1
     ) {
 
   # name palette
-  if(is.null(label)) label <- "pal"
+  label <- "pal"
 
-  if(is.null(img_path)) img_path <- file.path(system.file(package = "eyedroppeR"), "images", "hex.png")
+  img_shadow <- TRUE
+  if(is.null(img_path)) {
+    img_path <- file.path(system.file(package = "eyedroppeR"), "images", "hex.png")
+    img_shadow <- FALSE
+  }
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
     {
       # include palette?
       if(inc_palette) {
-        ex_pal <- suppressMessages(extract_pal(n_swatches, img_path, label, plot_output = FALSE, save_output = TRUE))
+        ex_pal <- suppressMessages(extract_pal(n_swatches, img_path, plot_output = FALSE, save_output = TRUE))
         img <- image_read(img_path)
       } else {
         img <- image_read(img_path)
@@ -112,8 +121,13 @@ eyedropper <- function(
 
   pal <- map_chr(eye_ls, ~{
     coords <- as.numeric(str_remove(reduce(.x, c), "npc"))
+    coords[2] <- switch(
+      coord_sys,
+      "1" = ceiling(coords[2])-coords[2],
+      "2" = 1-coords[2]+0.5
+    )
     # coords[2] <- ceiling(coords[2])-coords[2]
-    coords[2] <- 1-coords[2]+0.5
+    # coords[2] <- 1-coords[2]+0.5
     xpx <- round(coords[1]*dims[2])
     ypx <- round(coords[2]*dims[3])
     paste0("#", paste0(img_dat[, xpx, ypx][1:3], collapse = ""))
@@ -123,7 +137,8 @@ eyedropper <- function(
   pastey(pal, label)
 
   # make plot output
-  plt <- make_output(NULL, pal, img_path, label)
+  # plt <- make_output(NULL, pal, img_path, label)
+  plt <- swatch(pal, img = img_path, img_shadow = img_shadow)
   print(plt)
 
   # return
@@ -144,7 +159,6 @@ eyedropper <- function(
 #' @param n Number of colours to extract
 #' @param img_path Path to image. If `NULL` the function will read from the clipboard
 #' @param sort Sort method. Either 'manual' or 'auto'
-#' @param label Label for the palette.
 #' @param plot_output logical. Default \code{TRUE}. Plots the output of the extracted palette.
 #' @param save_output logical. Default \code{FALSE}. Save the output of the extracted palette.
 #'
@@ -157,7 +171,7 @@ eyedropper <- function(
 #' \dontrun{
 #' extract_pal(8, path)
 #' }
-extract_pal <- function(n, img_path, label = NULL, sort = "auto", plot_output = TRUE, save_output = FALSE) {
+extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_output = FALSE) {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
@@ -168,7 +182,7 @@ extract_pal <- function(n, img_path, label = NULL, sort = "auto", plot_output = 
   )
 
   # name palette
-  if(is.null(label)) label <- paste("Palette number", sample(100:999, 1))
+  label <- "pal"
 
   # resize and write image
   info <- image_info(img)
@@ -206,14 +220,12 @@ extract_pal <- function(n, img_path, label = NULL, sort = "auto", plot_output = 
   #   ggplot2::ggsave(plot = plt, filename = temp_final, height = 4, width = 6)
   # }
 
-  print(swatch(pal, temp))
+  if(plot_output) print(swatch(pal, temp))
 
   # return
   list(
-    label = label,
     pal = pal,
     img_path = temp
-    # saved_path = temp_final
   )
 
 }

@@ -4,18 +4,16 @@
 \alias{generate_palette}
 \title{Generate palette}
 \usage{
-generate_palette(n, prompt, name = NULL)
+generate_palette(n, prompt)
 }
 \arguments{
 \item{n}{Number of colours in the palette}
 
 \item{prompt}{Prompt}
-
-\item{name}{Name for the palette. If left NULL it will}
 }
 \description{
 Generate palette
 }
 \examples{
-# x <- generate_palette(4, 'colourful balls in a chldrens ball pit', name = 'Ball pit')
+# x <- generate_palette(4, 'a trail in a dense rainforest')
 }

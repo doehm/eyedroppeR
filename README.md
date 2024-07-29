@@ -47,6 +47,13 @@ will also be returned by the function. It will also output to console a
 message that can be copied and pasted directly to your code. That’s the
 best part!
 
+## What to do if it returns the wrong colours?
+
+Due to the OS, resolution, monitor size, (probably other things as well)
+`eyedropper` may return the wrong colours. Until there is a way to check
+the scaling automatically, try setting `coord_sys = 2` in the
+`eyedropper` call.
+
 ## Automatically extract a palette with `extract_pal`
 
 To speed up the process and if you’re not looking for specific colours

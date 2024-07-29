@@ -4,7 +4,7 @@
 \alias{make_output}
 \title{Makes eyedroppers output}
 \usage{
-make_output(obj = NULL, .pal, .img_path, .label)
+make_output(obj = NULL, .pal, .img_path)
 }
 \arguments{
 \item{obj}{Output from \code{extract_pal} or \code{eyedropper}}
@@ -12,8 +12,6 @@ make_output(obj = NULL, .pal, .img_path, .label)
 \item{.pal}{Palette}
 
 \item{.img_path}{Image path}
-
-\item{.label}{Label}
 }
 \value{
 ggplot object

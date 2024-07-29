@@ -8,9 +8,10 @@ swatch(
   pal,
   img = NULL,
   family = "Poppins",
-  .padding = 0,
-  .radius = 50,
-  ncols = NULL
+  padding = 0,
+  radius = 50,
+  ncols = NULL,
+  img_shadow = TRUE
 )
 }
 \arguments{
@@ -20,11 +21,13 @@ swatch(
 
 \item{family}{Font family}
 
-\item{.padding}{To add whitespace to the top of image}
+\item{padding}{To add whitespace to the top of image}
 
-\item{.radius}{The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.}
+\item{radius}{The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.}
 
 \item{ncols}{Number of cols in a row}
+
+\item{img_shadow}{Logical. Apply a shadow to the feature image output.}
 }
 \value{
 html doc
