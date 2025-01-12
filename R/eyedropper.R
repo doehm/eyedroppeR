@@ -161,6 +161,7 @@ eyedropper <- function(
 #' @param sort Sort method. Either 'manual' or 'auto'
 #' @param plot_output logical. Default \code{TRUE}. Plots the output of the extracted palette.
 #' @param save_output logical. Default \code{FALSE}. Save the output of the extracted palette.
+#' @param swatch_radius Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.
 #'
 #' @return Returns a character vector of hex codes
 #' @export
@@ -171,7 +172,7 @@ eyedropper <- function(
 #' \dontrun{
 #' extract_pal(8, path)
 #' }
-extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_output = FALSE) {
+extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_output = FALSE, swatch_radius = 50) {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
@@ -200,6 +201,7 @@ extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_out
   km <- kmeans(rgb_mat, n)
   km <- round(km$centers)
 
+
   # pal from centers
   pal <- map_chr(1:n, ~rgb(km[.x,1], km[.x,2], km[.x,3], maxColorValue = 255))
 
@@ -213,14 +215,8 @@ extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_out
 
   # make plot output
   temp_final <- NULL
-  # plt <- make_output(NULL, pal, img_path, label)
-  # if(plot_output) print(plt)
-  # if(save_output) {
-  #   temp_final <- tempfile(fileext = ".png")
-  #   ggplot2::ggsave(plot = plt, filename = temp_final, height = 4, width = 6)
-  # }
 
-  if(plot_output) print(swatch(pal, temp))
+  if(plot_output) print(swatch(pal, temp, radius = swatch_radius))
 
   # return
   list(

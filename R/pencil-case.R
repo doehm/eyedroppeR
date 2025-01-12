@@ -166,7 +166,7 @@ show_pencil_case <- function(offset = 50) {
 #'
 #' @param id Number
 #'
-#' @return
+#' @return A vector of hexcodes
 #' @export
 #'
 #' @examples

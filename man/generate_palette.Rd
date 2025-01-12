@@ -11,6 +11,9 @@ generate_palette(n, prompt)
 
 \item{prompt}{Prompt}
 }
+\value{
+A vector of hex codes
+}
 \description{
 Generate palette
 }

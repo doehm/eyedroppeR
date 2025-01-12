@@ -9,7 +9,8 @@ extract_pal(
   img_path,
   sort = "auto",
   plot_output = TRUE,
-  save_output = FALSE
+  save_output = FALSE,
+  swatch_radius = 50
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ extract_pal(
 \item{plot_output}{logical. Default \code{TRUE}. Plots the output of the extracted palette.}
 
 \item{save_output}{logical. Default \code{FALSE}. Save the output of the extracted palette.}
+
+\item{swatch_radius}{Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.}
 }
 \value{
 Returns a character vector of hex codes

@@ -251,10 +251,6 @@ make_output <- function(obj = NULL, .pal, .img_path) {
 
   ggplot() +
     geom_from_path(aes(wd/2, ht/2, path = temp_output_stack)) +
-    # geom_richtext(aes(x = wd*0.5, y = ht*0.15), label = .label, size = 8, fontface = "italic",
-    #               hjust = 0.5, label.colour = NA, fill = "grey90", alpha = 0.80,
-    #               labelpadding = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
-    #               label.r = unit(0.3, "lines")) +
     xlim(0, wd) +
     ylim(0, ht) +
     theme_void() +
@@ -301,7 +297,7 @@ choose_font_colour <- function(bg, light = "#ffffff", dark = "#000000", threshol
 #'
 #' @importFrom grDevices rgb2hsv hsv
 #'
-#' @return
+#' @return A vector of hex codes
 #' @export
 modify_saturation <- function(cols, sat = 1.2) {
   X <- diag(c(1, sat, 1)) %*% rgb2hsv(col2rgb(cols))

@@ -1,14 +1,4 @@
 
-#' Set OpenAI API key
-#'
-#' @param key Key from OpenAI account
-#'
-#' @return Nothing
-#' @export
-set_openai_key <- function(key) {
-  Sys.setenv(OPENAI_API_KEY = key)
-}
-
 #' Generate palette
 #'
 #' @param n Number of colours in the palette
@@ -17,7 +7,7 @@ set_openai_key <- function(key) {
 #' @importFrom openai create_image
 #' @importFrom stringr str_length
 #'
-#' @return
+#' @return A vector of hex codes
 #' @export
 #'
 #' @examples

@@ -11,6 +11,9 @@ modify_saturation(cols, sat = 1.2)
 
 \item{sat}{Factor to adjust the saturation}
 }
+\value{
+A vector of hex codes
+}
 \description{
 Modify the saturation of a colour palette
 }

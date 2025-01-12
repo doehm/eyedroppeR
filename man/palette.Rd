@@ -9,6 +9,9 @@ palette(id)
 \arguments{
 \item{id}{Number}
 }
+\value{
+A vector of hexcodes
+}
 \description{
 Easily get a palette from the pencil case
 }
