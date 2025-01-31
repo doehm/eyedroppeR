@@ -97,7 +97,7 @@ eyedropper <- function(
     for(k in 1:2) {
       cat(lab[k])
       calibration_points[[k]] <- grid.locator(unit = "npc")
-      cat(" ✅\n")
+      cat(" ✔\n")
     }
     cat("-- Calibration done --\n")
 
