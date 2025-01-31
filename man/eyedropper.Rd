@@ -9,6 +9,7 @@ eyedropper(
   img_path = NULL,
   inc_palette = TRUE,
   n_swatches = 24,
+  print_output = TRUE,
   coord_sys = 1
 )
 }
@@ -22,6 +23,8 @@ eyedropper(
 first and then you can select the desired colours.}
 
 \item{n_swatches}{Number of swatches to extract from the image prior to selecting colours.s}
+
+\item{print_output}{Print output to console to easily copy and paste into your script.}
 
 \item{coord_sys}{Method for extracting the colour from the graphics window Takes values 1, or 2.  See details for more.}
 }

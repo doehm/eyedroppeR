@@ -182,7 +182,6 @@ sort_pal <- function(pal, n = NULL) {
   new_pal_order <- floor(id*length(pal)) + 1
   pal <- pal[new_pal_order]
   print(show_pal(pal))
-  pastey(pal)
 
   pal
 
@@ -212,7 +211,7 @@ sort_pal_auto <- function(.pal, label, plot_output = FALSE) {
   max_k <- which.min(x)[1]
   if(max_k != 1) .pal <- .pal[c(max_k:length(.pal), 1:(max_k-1))]
   if(plot_output) print(show_pal(.pal))
-  pastey(.pal, label)
+
   .pal
 }
 
@@ -261,7 +260,7 @@ make_output <- function(obj = NULL, .pal, .img_path) {
 }
 
 
-#' Copy + Pastable palette vector
+#' Copy + Pasteable palette vector
 #'
 #' Prints a message to console so you can easily copy and paste the palette
 #'
@@ -269,7 +268,7 @@ make_output <- function(obj = NULL, .pal, .img_path) {
 #' @param .label Label
 #'
 #' @return a message
-pastey <- function(.pal, .label = NULL) {
+paste_pal_code <- function(.pal, .label = NULL) {
   if(is.null(.label)) .label = "pal"
   message(cyan(paste0("\n", to_snake_case(.label)," <- c('", paste0(.pal, collapse = "', '"), "')\n")))
 }

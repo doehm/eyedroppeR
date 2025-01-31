@@ -10,6 +10,7 @@ extract_pal(
   sort = "auto",
   plot_output = TRUE,
   save_output = FALSE,
+  print_output = TRUE,
   swatch_radius = 50
 )
 }
@@ -23,6 +24,8 @@ extract_pal(
 \item{plot_output}{logical. Default \code{TRUE}. Plots the output of the extracted palette.}
 
 \item{save_output}{logical. Default \code{FALSE}. Save the output of the extracted palette.}
+
+\item{print_output}{Print output to console to easily copy and paste into your script.}
 
 \item{swatch_radius}{Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.}
 }

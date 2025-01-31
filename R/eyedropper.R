@@ -12,6 +12,7 @@ utils::globalVariables(c("x", "y", "id", "bg", "name"))
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
 #' @param n_swatches Number of swatches to extract from the image prior to selecting colours.s
+#' @param print_output Print output to console to easily copy and paste into your script.
 #' @param coord_sys Method for extracting the colour from the graphics window Takes values 1, or 2.  See details for more.
 #'
 #' @details Use \code{eyedropper} with the following steps:
@@ -63,6 +64,7 @@ eyedropper <- function(
     img_path = NULL,
     inc_palette = TRUE,
     n_swatches = 24,
+    print_output = TRUE,
     coord_sys = 1
     ) {
 
@@ -126,20 +128,16 @@ eyedropper <- function(
       "1" = ceiling(coords[2])-coords[2],
       "2" = 1-coords[2]+0.5
     )
-    # coords[2] <- ceiling(coords[2])-coords[2]
-    # coords[2] <- 1-coords[2]+0.5
     xpx <- round(coords[1]*dims[2])
     ypx <- round(coords[2]*dims[3])
     paste0("#", paste0(img_dat[, xpx, ypx][1:3], collapse = ""))
   })
 
   # print pal to copy + paste
-  pastey(pal, label)
+  if(print_output) paste_pal_code(pal, label)
 
   # make plot output
-  # plt <- make_output(NULL, pal, img_path, label)
-  plt <- swatch(pal, img = img_path, img_shadow = img_shadow)
-  print(plt)
+  print(swatch(pal, img = img_path, img_shadow = img_shadow))
 
   # return
   list(
@@ -161,6 +159,7 @@ eyedropper <- function(
 #' @param sort Sort method. Either 'manual' or 'auto'
 #' @param plot_output logical. Default \code{TRUE}. Plots the output of the extracted palette.
 #' @param save_output logical. Default \code{FALSE}. Save the output of the extracted palette.
+#' @param print_output Print output to console to easily copy and paste into your script.
 #' @param swatch_radius Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.
 #'
 #' @return Returns a character vector of hex codes
@@ -172,7 +171,7 @@ eyedropper <- function(
 #' \dontrun{
 #' extract_pal(8, path)
 #' }
-extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_output = FALSE, swatch_radius = 50) {
+extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_output = FALSE, print_output = TRUE, swatch_radius = 50) {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
@@ -201,7 +200,6 @@ extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_out
   km <- kmeans(rgb_mat, n)
   km <- round(km$centers)
 
-
   # pal from centers
   pal <- map_chr(1:n, ~rgb(km[.x,1], km[.x,2], km[.x,3], maxColorValue = 255))
 
@@ -215,8 +213,10 @@ extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_out
 
   # make plot output
   temp_final <- NULL
-
   if(plot_output) print(swatch(pal, temp, radius = swatch_radius))
+
+  # print pal
+  if(print_output) paste_pal_code(pal)
 
   # return
   list(
