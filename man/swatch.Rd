@@ -9,9 +9,10 @@ swatch(
   img = NULL,
   family = "Poppins",
   padding = 0,
-  radius = 50,
+  radius = 20,
   ncols = NULL,
-  img_shadow = TRUE
+  img_shadow = TRUE,
+  shape = "original"
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ swatch(
 \item{ncols}{Number of cols in a row}
 
 \item{img_shadow}{Logical. Apply a shadow to the feature image output.}
+
+\item{shape}{Either 'original' for the original image dimensions or "square"
+to crop to square with rounded corners. A high enough radius will turn the square to a circle.}
 }
 \value{
 html doc

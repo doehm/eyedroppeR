@@ -31,13 +31,16 @@ Use `eyedropper` with the following steps:
 4.  Run
     `eyedropper(n = 8, img_path = '<paste address here>', label = "Sunset on the South Coast")`.
 
+5.  If it’s the first time you have run `eyedropper` complete the
+    calibration setup. It only needs to be done once.
+
     <img src='dev/images/sunset-sampler.png' height = 270 width = 480/>
 
-5.  Click the 8 desired colours. You can click on either the image
+6.  Click the 8 desired colours. You can click on either the image
     itself or the swatch at the bottom. The image will be stretched to
     the borders of the window, but that’s OK.
 
-6.  Done! Copy the returned string and add it to your script and start
+7.  Done! Copy the returned string and add it to your script and start
     using `pal`.
 
     <img src='dev/images/sunset-south-coast-output.png' height = 270 width = 480.png/>

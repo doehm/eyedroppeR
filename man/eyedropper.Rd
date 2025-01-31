@@ -10,7 +10,8 @@ eyedropper(
   inc_palette = TRUE,
   n_swatches = 24,
   print_output = TRUE,
-  coord_sys = 1
+  calibrate = FALSE,
+  swatch_radius = 50
 )
 }
 \arguments{
@@ -26,7 +27,11 @@ first and then you can select the desired colours.}
 
 \item{print_output}{Print output to console to easily copy and paste into your script.}
 
-\item{coord_sys}{Method for extracting the colour from the graphics window Takes values 1, or 2.  See details for more.}
+\item{calibrate}{Set to `TRUE` to calibrate the plot coordinates. Given the monitor
+resolution, scaling, etc it can throw off the pixel selection. Runs but default the first
+time the function is used.}
+
+\item{swatch_radius}{Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.}
 }
 \value{
 A character vector of hex codes
@@ -47,10 +52,11 @@ Use \code{eyedropper} with the following steps:
   \item{Done! Copy the returned string / message and add it to you script and start using \code{pal}}
 }
 
-If the colours returned are not the colours you selected, try setting `coord_sys = 2`. Depending on the OS, resolution or
-something else then clicking on the image may return a different set of coordinates. If they are mismatched,
-it will return the wrong colours, or it won't work at all. I'm unaware of a way to check the coordinate system
-before clicking on the image, so for now I have a toggle.
+The first time the function is run it will initiate a calibration set. This is so the `y` coordinates are
+scaled properly as this can depend on the monitors resolution, scaling, etc. In only takes a couple of seconds
+and you only have to do it once.
+
+Make sure you click as near as practicable to the top and bottom of the border of the windew within the dot.
 }
 \examples{
 \dontrun{

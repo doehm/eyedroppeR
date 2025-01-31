@@ -28,6 +28,8 @@ show_pal <- function(pal) {
 #' @param radius The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.
 #' @param ncols Number of cols in a row
 #' @param img_shadow Logical. Apply a shadow to the feature image output.
+#' @param shape Either 'original' for the original image dimensions or "square"
+#' to crop to square with rounded corners. A high enough radius will turn the square to a circle.
 #'
 #' @return html doc
 #' @export
@@ -41,7 +43,16 @@ show_pal <- function(pal) {
 #' url <- "https://github.com/doehm/eyedroppeR/raw/main/dev/images/sunset-south-coast.jpg"
 #' x <- extract_pal(4, url)
 #' swatch(x$pal, url)
-swatch <- function(pal, img = NULL, family = "Poppins", padding = 0, radius = 50, ncols = NULL, img_shadow = TRUE) {
+swatch <- function(
+    pal,
+    img = NULL,
+    family = "Poppins",
+    padding = 0,
+    radius = 20,
+    ncols = NULL,
+    img_shadow = TRUE,
+    shape = "original"
+    ) {
 
   if(is.null(ncols)) {
     if(length(pal) %in% c(5,6)) {
@@ -57,7 +68,14 @@ swatch <- function(pal, img = NULL, family = "Poppins", padding = 0, radius = 50
 
   nrows <- ceiling(length(pal)/ncols)
 
-  img_style <- glue("border-radius: {radius}%; box-shadow: 0 0 10px 2px rgba(0,0,0,{0.3*img_shadow}); object-fit: cover;")
+  if(!is.null(img)) {
+    info <- image_read(img) |>
+      image_info()
+    rx <- radius
+    ry <- radius
+  }
+
+  img_style <- glue("border-radius: {rx}px {ry}px; box-shadow: 0 0 10px 2px rgba(0,0,0,{0.3*img_shadow}); object-fit: cover;")
 
   dot_ <- function(bg, circle) {
 
@@ -79,7 +97,7 @@ swatch <- function(pal, img = NULL, family = "Poppins", padding = 0, radius = 50
     if(is.null(img)) {
       out <- tbl
     } else {
-      if(radius != 50) {
+      if(shape == "original") {
         info <- image_read(img) |>
           image_info()
         wd <- info$width/info$height*300
@@ -301,4 +319,22 @@ choose_font_colour <- function(bg, light = "#ffffff", dark = "#000000", threshol
 modify_saturation <- function(cols, sat = 1.2) {
   X <- diag(c(1, sat, 1)) %*% rgb2hsv(col2rgb(cols))
   hsv(X[1,], pmin(X[2,], 1), X[3,])
+}
+
+
+#' Min-max scale function
+#'
+#' @param x Vector of values
+#' @param a Min
+#' @param b Max
+#' @param a0 Min bound
+#' @param b0 Max bound
+#'
+#' @return numeric vector
+min_max <- function(x, a, b, a0 = NULL, b0 = NULL) {
+  if(is.null(a0) & is.null(b0)) {
+    a0 <- min(x)
+    b0 <- max(x)
+  }
+  (b - a) * (x - a0) / (b0 - a0) + a
 }

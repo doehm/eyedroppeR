@@ -1,4 +1,4 @@
-utils::globalVariables(c("x", "y", "id", "bg", "name"))
+utils::globalVariables(c("x", "y", "id", "bg", "name", "text"))
 
 #' Eyedropper
 #'
@@ -13,7 +13,10 @@ utils::globalVariables(c("x", "y", "id", "bg", "name"))
 #' first and then you can select the desired colours.
 #' @param n_swatches Number of swatches to extract from the image prior to selecting colours.s
 #' @param print_output Print output to console to easily copy and paste into your script.
-#' @param coord_sys Method for extracting the colour from the graphics window Takes values 1, or 2.  See details for more.
+#' @param calibrate Set to `TRUE` to calibrate the plot coordinates. Given the monitor
+#' resolution, scaling, etc it can throw off the pixel selection. Runs but default the first
+#' time the function is used.
+#' @param swatch_radius Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -25,10 +28,11 @@ utils::globalVariables(c("x", "y", "id", "bg", "name"))
 #'   \item{Done! Copy the returned string / message and add it to you script and start using \code{pal}}
 #' }
 #'
-#' If the colours returned are not the colours you selected, try setting `coord_sys = 2`. Depending on the OS, resolution or
-#' something else then clicking on the image may return a different set of coordinates. If they are mismatched,
-#' it will return the wrong colours, or it won't work at all. I'm unaware of a way to check the coordinate system
-#' before clicking on the image, so for now I have a toggle.
+#' The first time the function is run it will initiate a calibration set. This is so the `y` coordinates are
+#' scaled properly as this can depend on the monitors resolution, scaling, etc. In only takes a couple of seconds
+#' and you only have to do it once.
+#'
+#' Make sure you click as near as practicable to the top and bottom of the border of the windew within the dot.
 #'
 #' @return A character vector of hex codes
 #' @export
@@ -65,11 +69,46 @@ eyedropper <- function(
     inc_palette = TRUE,
     n_swatches = 24,
     print_output = TRUE,
-    coord_sys = 1
+    calibrate = FALSE,
+    swatch_radius = 50
     ) {
 
   # name palette
+  # keeping this here in case I add back in the parameter
   label <- "pal"
+
+  # calibrate
+  if(calibrate | !exists("eyedropper_calibration", mode = "environment")) {
+    plt_calibrate <- tibble(
+      x = 0.5,
+      y = c(0.9, 0.1),
+      text = c("To calibrate,\nfirst click here\nwithin the dot", "Then click here\nwithin the dot")
+    ) |>
+      ggplot() +
+      annotation_raster(image_read(file.path(system.file(package = "eyedroppeR"), "images", "calibration.png")), xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
+      geom_text(aes(x-0.1, y, label = text), size = 8, hjust = 1, lineheight = 0.8) +
+      ylim(0, 1) +
+      xlim(0, 1) +
+      theme_void()
+    print(plt_calibrate)
+
+    calibration_points <- list()
+    lab <- c("Top", "Bottom")
+    for(k in 1:2) {
+      cat(lab[k])
+      calibration_points[[k]] <- grid.locator(unit = "npc")
+      cat(" ✅\n")
+    }
+    cat("-- Calibration done --\n")
+
+    # create a new environment to store the calibration points
+    eyedropper_calibration <<- new.env()
+
+    # calculate min and max y
+    eyedropper_calibration$max_y <- as.numeric(calibration_points[[1]]$y)
+    eyedropper_calibration$min_y <- as.numeric(calibration_points[[2]]$y)
+
+  }
 
   img_shadow <- TRUE
   if(is.null(img_path)) {
@@ -92,9 +131,8 @@ eyedropper <- function(
   )
 
   # resize and write image
-  hi_res <- FALSE
   info <- image_info(img)
-  ht <- min(info$height, 800+hi_res*9999)
+  ht <- min(info$height, 800)
   wd <- info$width*ht/info$height
   img_rs <- image_resize(img, geometry = paste0(ht, "x", wd))
   temp <- tempfile()
@@ -123,11 +161,7 @@ eyedropper <- function(
 
   pal <- map_chr(eye_ls, ~{
     coords <- as.numeric(str_remove(reduce(.x, c), "npc"))
-    coords[2] <- switch(
-      coord_sys,
-      "1" = ceiling(coords[2])-coords[2],
-      "2" = 1-coords[2]+0.5
-    )
+    coords[2] <- 1-min_max(coords[2], 0, 1, a0 = eyedropper_calibration$min_y, b0 = eyedropper_calibration$max_y)
     xpx <- round(coords[1]*dims[2])
     ypx <- round(coords[2]*dims[3])
     paste0("#", paste0(img_dat[, xpx, ypx][1:3], collapse = ""))
@@ -137,7 +171,7 @@ eyedropper <- function(
   if(print_output) paste_pal_code(pal, label)
 
   # make plot output
-  print(swatch(pal, img = img_path, img_shadow = img_shadow))
+  print(swatch(pal, img = img_path, img_shadow = img_shadow, radius = swatch_radius))
 
   # return
   list(
@@ -171,7 +205,15 @@ eyedropper <- function(
 #' \dontrun{
 #' extract_pal(8, path)
 #' }
-extract_pal <- function(n, img_path, sort = "auto", plot_output = TRUE, save_output = FALSE, print_output = TRUE, swatch_radius = 50) {
+extract_pal <- function(
+    n,
+    img_path,
+    sort = "auto",
+    plot_output = TRUE,
+    save_output = FALSE,
+    print_output = TRUE,
+    swatch_radius = 50
+    ) {
 
   err_bad_link <- simpleError("Incorrect path. Please supply the correct link to img_path")
   tryCatch(
