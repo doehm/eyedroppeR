@@ -23,6 +23,7 @@ show_pal <- function(pal) {
 #'
 #' @param pal Vector of colours
 #' @param img Image address. Either local file or URL
+#' @param label Label for the palette.
 #' @param family Font family
 #' @param padding To add whitespace to the top of image
 #' @param radius The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.
@@ -46,6 +47,7 @@ show_pal <- function(pal) {
 swatch <- function(
     pal,
     img = NULL,
+    label = NULL,
     family = "Poppins",
     padding = 0,
     radius = 20,
@@ -65,15 +67,16 @@ swatch <- function(
   }
 
   padding <- paste0(rep("<br>", padding), collapse = "")
-
   nrows <- ceiling(length(pal)/ncols)
+  rx <- radius
+  ry <- radius
 
-  if(!is.null(img)) {
-    info <- image_read(img) |>
-      image_info()
-    rx <- radius
-    ry <- radius
-  }
+  # if(!is.null(img)) {
+  #   info <- image_read(img) |>
+  #     image_info()
+  #   rx <- radius
+  #   ry <- radius
+  # }
 
   img_style <- glue("border-radius: {rx}px {ry}px; box-shadow: 0 0 10px 2px rgba(0,0,0,{0.3*img_shadow}); object-fit: cover;")
 
@@ -105,7 +108,10 @@ swatch <- function(
         wd <- 300
       }
       out <- tbl |>
-        tab_header(title = gt::html(glue("{padding}<img src='{uri}' width={wd} height=300 style='{img_style}';>")))
+        tab_header(
+          title = gt::html(glue("{padding}<img src='{uri}' width={wd} height=300 style='{img_style}';>")),
+          subtitle = gt::html(glue("<span style='font-size: 18px;'>{label}</span>"))
+        )
     }
   }
 

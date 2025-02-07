@@ -9,6 +9,7 @@ utils::globalVariables(c("x", "y", "id", "bg", "name", "text"))
 #' @param n Number of colours to extract from the image
 #' @param img_path Path to image. Can be local or from a URL. If left \code{NULL},
 #' \code{eyedropper} will read the image address directly from the clipboard.
+#' @param label Label for the palette.
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
 #' @param n_swatches Number of swatches to extract from the image prior to selecting colours.s
@@ -66,6 +67,7 @@ utils::globalVariables(c("x", "y", "id", "bg", "name", "text"))
 eyedropper <- function(
     n,
     img_path = NULL,
+    label = NULL,
     inc_palette = TRUE,
     n_swatches = 24,
     print_output = TRUE,
@@ -75,7 +77,7 @@ eyedropper <- function(
 
   # name palette
   # keeping this here in case I add back in the parameter
-  label <- "pal"
+  if(is.null(label)) label <- "pal"
 
   # calibrate
   if(calibrate | !exists("eyedropper_calibration", mode = "environment")) {
@@ -171,7 +173,8 @@ eyedropper <- function(
   if(print_output) paste_pal_code(pal, label)
 
   # make plot output
-  print(swatch(pal, img = img_path, img_shadow = img_shadow, radius = swatch_radius))
+  if(label == "pal") label <- NULL
+  print(swatch(pal, img = img_path, label = label, img_shadow = img_shadow, radius = swatch_radius))
 
   # return
   list(
@@ -190,6 +193,7 @@ eyedropper <- function(
 #'
 #' @param n Number of colours to extract
 #' @param img_path Path to image. If `NULL` the function will read from the clipboard
+#' @param label Label for the palette.
 #' @param sort Sort method. Either 'manual' or 'auto'
 #' @param plot_output logical. Default \code{TRUE}. Plots the output of the extracted palette.
 #' @param save_output logical. Default \code{FALSE}. Save the output of the extracted palette.
@@ -208,6 +212,7 @@ eyedropper <- function(
 extract_pal <- function(
     n,
     img_path,
+    label = NULL,
     sort = "auto",
     plot_output = TRUE,
     save_output = FALSE,
@@ -224,7 +229,7 @@ extract_pal <- function(
   )
 
   # name palette
-  label <- "pal"
+  if(is.null(label)) label <- "pal"
 
   # resize and write image
   info <- image_info(img)
@@ -255,7 +260,8 @@ extract_pal <- function(
 
   # make plot output
   temp_final <- NULL
-  if(plot_output) print(swatch(pal, temp, radius = swatch_radius))
+  if(label == "pal") label <- NULL
+  if(plot_output) print(swatch(pal, temp, label = label, radius = swatch_radius))
 
   # print pal
   if(print_output) paste_pal_code(pal)

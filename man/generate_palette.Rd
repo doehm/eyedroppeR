@@ -15,7 +15,8 @@ generate_palette(n, prompt)
 A vector of hex codes
 }
 \description{
-Generate palette
+⚠️ DEPRECATED: openai has been archived and I have to work out how to generate
+images with {ellmer} and the new APIs.
 }
 \examples{
 # x <- generate_palette(4, 'a trail in a dense rainforest')

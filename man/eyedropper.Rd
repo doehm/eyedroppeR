@@ -7,6 +7,7 @@
 eyedropper(
   n,
   img_path = NULL,
+  label = NULL,
   inc_palette = TRUE,
   n_swatches = 24,
   print_output = TRUE,
@@ -19,6 +20,8 @@ eyedropper(
 
 \item{img_path}{Path to image. Can be local or from a URL. If left \code{NULL},
 \code{eyedropper} will read the image address directly from the clipboard.}
+
+\item{label}{Label for the palette.}
 
 \item{inc_palette}{Logical. If \code{TRUE} it will automatically extract a palette
 first and then you can select the desired colours.}

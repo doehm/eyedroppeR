@@ -7,6 +7,7 @@
 extract_pal(
   n,
   img_path,
+  label = NULL,
   sort = "auto",
   plot_output = TRUE,
   save_output = FALSE,
@@ -18,6 +19,8 @@ extract_pal(
 \item{n}{Number of colours to extract}
 
 \item{img_path}{Path to image. If `NULL` the function will read from the clipboard}
+
+\item{label}{Label for the palette.}
 
 \item{sort}{Sort method. Either 'manual' or 'auto'}
 

@@ -1,6 +1,9 @@
 
 #' Generate palette
 #'
+#' ⚠️ DEPRECATED: openai has been archived and I have to work out how to generate
+#' images with {ellmer} and the new APIs.
+#'
 #' @param n Number of colours in the palette
 #' @param prompt Prompt
 #'

@@ -7,6 +7,7 @@
 swatch(
   pal,
   img = NULL,
+  label = NULL,
   family = "Poppins",
   padding = 0,
   radius = 20,
@@ -19,6 +20,8 @@ swatch(
 \item{pal}{Vector of colours}
 
 \item{img}{Image address. Either local file or URL}
+
+\item{label}{Label for the palette.}
 
 \item{family}{Font family}
 
