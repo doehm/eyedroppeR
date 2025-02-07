@@ -258,13 +258,13 @@ extract_pal <- function(
     pal <- sort_pal(pal, n = nx)
   }
 
+  # print pal
+  if(print_output) paste_pal_code(pal, label)
+
   # make plot output
   temp_final <- NULL
   if(label == "pal") label <- NULL
   if(plot_output) print(swatch(pal, temp, label = label, radius = swatch_radius))
-
-  # print pal
-  if(print_output) paste_pal_code(pal)
 
   # return
   list(
