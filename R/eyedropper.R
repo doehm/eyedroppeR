@@ -18,8 +18,9 @@ utils::globalVariables(c("x", "y", "id", "bg", "name", "text"))
 #' resolution, scaling, etc it can throw off the pixel selection. Runs but default the first
 #' time the function is used.
 #' @param swatch_radius Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.
-#' @param pixelate If `TRUE` a low-res image will be displayed so that it is easier to select the right colour. If
-#' pixelate is `TRUE` the palette selector at the bottom of the image won't be shown.
+#' @param pixelate If `TRUE` or some numeric value, a low-res image will be displayed so that it is easier to select the right colour. Pixelate
+#' is set to `40` pixels. To make it more pixelated use a lower number of pixels e.g. `pixelate = 40`. If
+#' pixelate is used the palette selector at the bottom of the image won't be shown.
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -27,7 +28,7 @@ utils::globalVariables(c("x", "y", "id", "bg", "name", "text"))
 #'   \item{Right-click and 'copy image address'.}
 #'   \item{Choose how many colours to pick e.g. \code{n = 5}.}
 #'   \item{Run \code{pal <- eyedropper(n = 5, img_path = 'paste-image-path-here')}.}
-#'   \item{Click 5 areas of the image. The image will be stretched to the borders of the window, but that's OK.}
+#'   \item{Click 5 areas of the image. Thes image will be stretched to the borders of the window, but that's OK.}
 #'   \item{Done! Copy the returned string / message and add it to you script and start using \code{pal}}
 #' }
 #'
@@ -149,8 +150,13 @@ eyedropper <- function(
   img_selector <- image_append(image_scale(c(img_rs, image_read(temp_selector)), as.character(ht)), stack = TRUE)
 
   # pixelate
-  if(pixelate) {
-    img_selector <- image_resize(img, geometry = "80x", filter = "Point")
+  if(pixelate | is.numeric(pixelate)) {
+    if(is.numeric(pixelate)) {
+      geo <- glue("{pixelate}x")
+    } else {
+      geo <- "40x"
+    }
+    img_selector <- image_resize(img, geometry = geo, filter = "Point")
   }
 
   # plot image for clicking

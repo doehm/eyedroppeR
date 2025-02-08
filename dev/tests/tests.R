@@ -21,3 +21,7 @@ eyedropper(3, "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtrope
 eyedropper(3, "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/tumblr_static_byogb2dbbsowcgc4gowcwwggg.jpg", print_output = FALSE)
 
 eyedropper(3, "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/tumblr_static_byogb2dbbsowcgc4gowcwwggg.jpg", calibrate = TRUE)
+
+eyedropper(3, "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/tumblr_static_byogb2dbbsowcgc4gowcwwggg.jpg", pixelate = TRUE)
+
+eyedropper(3, "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/tumblr_static_byogb2dbbsowcgc4gowcwwggg.jpg", pixelate = 20)

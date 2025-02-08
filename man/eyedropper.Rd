@@ -37,8 +37,9 @@ time the function is used.}
 
 \item{swatch_radius}{Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.}
 
-\item{pixelate}{If `TRUE` a low-res image will be displayed so that it is easier to select the right colour. If
-pixelate is `TRUE` the palette selector at the bottom of the image won't be shown.}
+\item{pixelate}{If `TRUE` or some numeric value, a low-res image will be displayed so that it is easier to select the right colour. Pixelate
+is set to `40` pixels. To make it more pixelated use a lower number of pixels e.g. `pixelate = 40`. If
+pixelate is used the palette selector at the bottom of the image won't be shown.}
 }
 \value{
 A character vector of hex codes
@@ -55,7 +56,7 @@ Use \code{eyedropper} with the following steps:
   \item{Right-click and 'copy image address'.}
   \item{Choose how many colours to pick e.g. \code{n = 5}.}
   \item{Run \code{pal <- eyedropper(n = 5, img_path = 'paste-image-path-here')}.}
-  \item{Click 5 areas of the image. The image will be stretched to the borders of the window, but that's OK.}
+  \item{Click 5 areas of the image. Thes image will be stretched to the borders of the window, but that's OK.}
   \item{Done! Copy the returned string / message and add it to you script and start using \code{pal}}
 }
 
