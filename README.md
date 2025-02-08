@@ -32,8 +32,11 @@ Use `eyedropper` with the following steps:
     `eyedropper(n = 8, img_path = '<paste address here>', label = "Sunset on the South Coast")`.
 
 5.  If it’s the first time you have run `eyedropper` complete the
-    calibration setup. It only needs to be done once. Just click the top
-    dot and then the bottom dot.
+    calibration setup. It only needs to be done once, just click the top
+    dot and then the bottom dot. (This is temporary until I find an
+    automated way to do it that works for everyone’s system setup. It
+    only takes a few seconds, and trust me it’s more efficient than
+    selecting the wrong colours and trying to work out why.)
 
     <img src='dev/images/calibrate.png' height = 270 width = 480/>
 
@@ -46,19 +49,32 @@ Use `eyedropper` with the following steps:
 7.  Done! Copy the returned string and add it to your script and start
     using `pal`.
 
-    <img src='dev/images/sunset-south-coast-output.png' height = 270 width = 480.png/>
+    <img src='dev/images/sunset-south-coast-output.png' width = 480.png/>
 
 The palette, image that is saved at the temporary address, and the label
 will also be returned by the function. It will also output to console a
 message that can be copied and pasted directly to your code. That’s the
 best part!
 
-## What to do if it returns the wrong colours?
+## Use `pixelate` to easily select the right colour
 
-Due to the OS, resolution, monitor size, (probably other things as well)
-`eyedropper` may return the wrong colours. Until there is a way to check
-the scaling automatically, try setting `coord_sys = 2` in the
-`eyedropper` call.
+By setting `pixelate = TRUE` the original image will be converted to a
+low resolution so that it’s easily to select the right colour. The
+default pixelation is set to 40 (pixels on the x and y). You can adjust
+that higher or lower as needed.
+
+<img src='dev/images/snes/secret-of-mana-og.png' height = 270 width = 480/>
+
+``` r
+eyedropper(n = 8, img_path = '<paste address here>', pixelate = TRUE)
+```
+
+<img src='dev/images/snes/secret-of-mana-40p.png' height = 270 width = 480/>
+
+<img src='dev/images/snes/mana.png' width = 480/>
+
+When `pixelate` is the swatch banner at the bottom won’t be displayed
+because it’s not really needed.
 
 ## Automatically extract a palette with `extract_pal`
 
@@ -69,7 +85,7 @@ you can run `extract_pal` to automatically select some for you.
 library(eyedroppeR)
 
 path <- "https://github.com/doehm/eyedroppeR/blob/main/dev/images/belize.jpg?raw=true"
-extract_pal(12, path, label = "Caye Caulker, Belize", sort = "auto")
+extract_pal(12, path, label = "Caye Caulker, Belize")
 ```
 
 <img src='dev/images/belize.jpg' height = 270 width = 480/>
@@ -86,7 +102,7 @@ extract_pal(12, path, label = "Caye Caulker, Belize", sort = "auto")
     $img_path
     [1] "C:\\Users\\Dan\\AppData\\Local\\Temp\\RtmpIN1NcN\\file70302f63b83"
 
-<img src='dev/images/belize-output-12.png' height = 300 width = 480/>
+<!-- <img src='dev/images/belize-output-12.png' height = 300 width = 480/> -->
 
 Often you won’t quite get what you’re after and you’ll want to use
 `eyedropper` instead.
@@ -95,7 +111,7 @@ Often you won’t quite get what you’re after and you’ll want to use
 
 ``` r
 path <- "https://github.com/doehm/eyedroppeR/blob/main/dev/images/belize.jpg?raw=true"
-x <- extract_pal(4, path, sort = "auto")
+x <- extract_pal(4, path)
 
 swatch(x$pal, path)
 ```
