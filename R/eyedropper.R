@@ -12,12 +12,14 @@ utils::globalVariables(c("x", "y", "id", "bg", "name", "text"))
 #' @param label Label for the palette.
 #' @param inc_palette Logical. If \code{TRUE} it will automatically extract a palette
 #' first and then you can select the desired colours.
-#' @param n_swatches Number of swatches to extract from the image prior to selecting colours.s
+#' @param n_swatches Number of swatches to extract from the image prior to selecting colours.
 #' @param print_output Print output to console to easily copy and paste into your script.
 #' @param calibrate Set to `TRUE` to calibrate the plot coordinates. Given the monitor
 #' resolution, scaling, etc it can throw off the pixel selection. Runs but default the first
 #' time the function is used.
 #' @param swatch_radius Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.
+#' @param pixelate If `TRUE` a low-res image will be displayed so that it is easier to select the right colour. If
+#' pixelate is `TRUE` the palette selector at the bottom of the image won't be shown.
 #'
 #' @details Use \code{eyedropper} with the following steps:
 #' \enumerate{
@@ -72,7 +74,8 @@ eyedropper <- function(
     n_swatches = 24,
     print_output = TRUE,
     calibrate = FALSE,
-    swatch_radius = 50
+    swatch_radius = 50,
+    pixelate = FALSE
     ) {
 
   # name palette
@@ -144,6 +147,13 @@ eyedropper <- function(
   temp_selector <- tempfile(fileext = ".png")
   ggsave(plot = show_pal(ex_pal$pal), filename = temp_selector, height = ht/10, width = wd, units = "px")
   img_selector <- image_append(image_scale(c(img_rs, image_read(temp_selector)), as.character(ht)), stack = TRUE)
+
+  # pixelate
+  if(pixelate) {
+    img_selector <- image_resize(img, geometry = "80x", filter = "Point")
+  }
+
+  # plot image for clicking
   print(ggplot() +
     annotation_raster(img_selector, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf))
 
@@ -151,11 +161,11 @@ eyedropper <- function(
   eye_ls <- list()
   message(white("\nClick on image to select colours\n"))
   for(k in 1:n) {
-    message(white(glue("Colours selected: {k-1}/{n}\r")))
+    cat(glue("Colours selected: {k-1}/{n}\r"))
     eye_ls[[k]] <- grid.locator(unit = "npc")
     if(info$width*as.numeric(eye_ls[[k]]$x) < 0) stop("...eyedropper killed\n")
   }
-  message(white(glue("Colours selected: {n}/{n}")))
+  cat(glue("Colours selected: {n}/{n}\n\n"))
 
   # get image data and extract from image
   img_dat <- image_data(img_selector)
@@ -164,8 +174,8 @@ eyedropper <- function(
   pal <- map_chr(eye_ls, ~{
     coords <- as.numeric(str_remove(reduce(.x, c), "npc"))
     coords[2] <- 1-min_max(coords[2], 0, 1, a0 = eyedropper_calibration$min_y, b0 = eyedropper_calibration$max_y)
-    xpx <- round(coords[1]*dims[2])
-    ypx <- round(coords[2]*dims[3])
+    xpx <- ceiling(coords[1]*dims[2])
+    ypx <- ceiling(coords[2]*dims[3])
     paste0("#", paste0(img_dat[, xpx, ypx][1:3], collapse = ""))
   })
 

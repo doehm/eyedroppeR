@@ -4,12 +4,16 @@
 \alias{sort_pal}
 \title{Manually sort a palette}
 \usage{
-sort_pal(pal, n = NULL)
+sort_pal(pal, n = NULL, label = NULL, print_output = TRUE)
 }
 \arguments{
 \item{pal}{Palette. Character vector of hex codes}
 
 \item{n}{Number of colours to choose}
+
+\item{label}{Label for the palette.}
+
+\item{print_output}{Print output to console to easily copy and paste into your script.}
 }
 \value{
 Character vector
@@ -17,7 +21,7 @@ Character vector
 \description{
 The palette is displayed in the plotting window where you can click
 the colours in the order you want to sort them. The sorted palette
-will be returned.
+will be returned. This saves you copy/pasting hex codes in your script.
 }
 \examples{
 \dontrun{

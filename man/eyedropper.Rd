@@ -12,7 +12,8 @@ eyedropper(
   n_swatches = 24,
   print_output = TRUE,
   calibrate = FALSE,
-  swatch_radius = 50
+  swatch_radius = 50,
+  pixelate = FALSE
 )
 }
 \arguments{
@@ -26,7 +27,7 @@ eyedropper(
 \item{inc_palette}{Logical. If \code{TRUE} it will automatically extract a palette
 first and then you can select the desired colours.}
 
-\item{n_swatches}{Number of swatches to extract from the image prior to selecting colours.s}
+\item{n_swatches}{Number of swatches to extract from the image prior to selecting colours.}
 
 \item{print_output}{Print output to console to easily copy and paste into your script.}
 
@@ -35,6 +36,9 @@ resolution, scaling, etc it can throw off the pixel selection. Runs but default 
 time the function is used.}
 
 \item{swatch_radius}{Radius of the image for the swatch. Default 50 to make it a circle. Use 5 for rounded edges.}
+
+\item{pixelate}{If `TRUE` a low-res image will be displayed so that it is easier to select the right colour. If
+pixelate is `TRUE` the palette selector at the bottom of the image won't be shown.}
 }
 \value{
 A character vector of hex codes

@@ -32,7 +32,10 @@ Use `eyedropper` with the following steps:
     `eyedropper(n = 8, img_path = '<paste address here>', label = "Sunset on the South Coast")`.
 
 5.  If it’s the first time you have run `eyedropper` complete the
-    calibration setup. It only needs to be done once.
+    calibration setup. It only needs to be done once. Just click the top
+    dot and then the bottom dot.
+
+    <img src='dev/images/calibrate.png' height = 270 width = 480/>
 
     <img src='dev/images/sunset-sampler.png' height = 270 width = 480/>
 

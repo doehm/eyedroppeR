@@ -51,51 +51,27 @@ swatch <- function(
     family = "Poppins",
     padding = 0,
     radius = 20,
-    ncols = NULL,
+    ncols = 8,
     img_shadow = TRUE,
     shape = "original"
     ) {
 
-  if(is.null(ncols)) {
-    if(length(pal) %in% c(5,6)) {
-      ncols <- 3
-    } else if(length(pal) <= 3){
-      ncols <- length(pal)
-    } else {
-      ncols <- 4
-    }
+  # set the number of cols for the swatch
+  if(length(pal) > ncols & length(pal) < 2*ncols) {
+    ncols <- ceiling(length(pal)/2)
+  } else {
+    ncols <- min(ncols, length(pal))
   }
 
   padding <- paste0(rep("<br>", padding), collapse = "")
   nrows <- ceiling(length(pal)/ncols)
+
+  # radius on x and y for the rounded corners of the image
   rx <- radius
   ry <- radius
 
-  # if(!is.null(img)) {
-  #   info <- image_read(img) |>
-  #     image_info()
-  #   rx <- radius
-  #   ry <- radius
-  # }
-
+  # css and function for the main image
   img_style <- glue("border-radius: {rx}px {ry}px; box-shadow: 0 0 10px 2px rgba(0,0,0,{0.3*img_shadow}); object-fit: cover;")
-
-  dot_ <- function(bg, circle) {
-
-    txt <- choose_font_colour(bg)
-
-    str_remove_all(glue("height: 150px;
-    width: 150px;
-    background-color: {bg};
-    color: {txt};
-    font-weight: 400;
-    font-size: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    box-shadow: 0 0 10px 2px rgba(0,0,0,0.3);"),
-    "\\n[:space:]")
-  }
-
   img_header <- function(tbl) {
     if(is.null(img)) {
       out <- tbl
@@ -115,6 +91,24 @@ swatch <- function(
     }
   }
 
+  # function and css for the colour dots
+  dot_ <- function(bg, circle) {
+
+    txt <- choose_font_colour(bg)
+
+    str_remove_all(glue("height: 150px;
+    width: 150px;
+    background-color: {bg};
+    color: {txt};
+    font-weight: 400;
+    font-size: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 10px 2px rgba(0,0,0,0.3);"),
+    "\\n[:space:]")
+  }
+
+  # if the image is from a url do this thing so it works in {gt}
   if(!is.null(img)) {
     if(!str_detect(img, "http")) {
       uri <- gt:::get_image_uri(img)
@@ -123,6 +117,7 @@ swatch <- function(
     }
   }
 
+  # make the table
   tibble(
     id =  1:length(pal),
     pal = pal
@@ -181,10 +176,12 @@ swatch <- function(
 #'
 #' The palette is displayed in the plotting window where you can click
 #' the colours in the order you want to sort them. The sorted palette
-#' will be returned.
+#' will be returned. This saves you copy/pasting hex codes in your script.
 #'
 #' @param pal Palette. Character vector of hex codes
 #' @param n Number of colours to choose
+#' @param label Label for the palette.
+#' @param print_output Print output to console to easily copy and paste into your script.
 #'
 #' @return Character vector
 #' @export
@@ -193,19 +190,31 @@ swatch <- function(
 #' pal <- sample(c('#57364e', '#566f1b', '#97a258', '#cac58b', '#dbedd5'))
 #' sort_pal(pal)
 #' }
-sort_pal <- function(pal, n = NULL) {
+sort_pal <- function(pal, n = NULL, label = NULL, print_output = TRUE) {
+
+  # show initial palette for clicking on
   print(show_pal(pal))
+
+  # loop to click on image
   if(is.null(n)) n <- length(pal)
   message(white(glue("Click {n} colours in the desired order\n\n")))
   pos_ls <- list()
   for(k in 1:n) {
     pos_ls[[k]] <- grid.locator(unit = "npc")
+    cat(glue("colours sorted: {k}/{n}\r"))
   }
 
+  # sort from user input
   id <- map_dbl(pos_ls, ~as.numeric(.x$x))
   new_pal_order <- floor(id*length(pal)) + 1
   pal <- pal[new_pal_order]
   print(show_pal(pal))
+
+  # print palette code
+  if(print_output) {
+    cat("\n")
+    paste_pal_code(pal, label)
+  }
 
   pal
 
@@ -216,7 +225,7 @@ sort_pal <- function(pal, n = NULL) {
 #' Automatically sorts the palette. May not give the desired result. If not you
 #' can run `sort_pal()` to manually sort.
 #'
-#' @param .pal Input palette
+#' @param pal Input palette
 #' @param label Label for the palette.
 #' @param plot_output Logical. Default \code{FALSE}.
 #'
@@ -226,17 +235,18 @@ sort_pal <- function(pal, n = NULL) {
 #' @examples
 #' pal <- sample(colours(), 8)
 #' sort_pal_auto(pal, 'test')
-sort_pal_auto <- function(.pal, label, plot_output = FALSE) {
-  rgb <- col2rgb(.pal)
+sort_pal_auto <- function(pal, label, plot_output = FALSE) {
+
+  rgb <- col2rgb(pal)
   tsp <- as.TSP(dist(t(rgb)))
   sol <- solve_TSP(tsp, control = list(repetitions = 1e3))
-  .pal <- .pal[sol]
-  x <- colSums(col2rgb(.pal))
+  pal <- pal[sol]
+  x <- colSums(col2rgb(pal))
   max_k <- which.min(x)[1]
-  if(max_k != 1) .pal <- .pal[c(max_k:length(.pal), 1:(max_k-1))]
-  if(plot_output) print(show_pal(.pal))
+  if(max_k != 1) pal <- pal[c(max_k:length(pal), 1:(max_k-1))]
+  if(plot_output) print(show_pal(pal))
 
-  .pal
+  pal
 }
 
 #' Makes eyedroppers output
@@ -244,19 +254,19 @@ sort_pal_auto <- function(.pal, label, plot_output = FALSE) {
 #' Plots the palette and places the image and label over the top.
 #'
 #' @param obj Output from \code{extract_pal} or \code{eyedropper}
-#' @param .pal Palette
-#' @param .img_path Image path
+#' @param pal Palette
+#' @param img_path Image path
 #'
 #' @return ggplot object
-make_output <- function(obj = NULL, .pal, .img_path) {
+make_output <- function(obj = NULL, pal, img_path) {
 
   if(!is.null(obj)) {
-    .pal <- obj$pal
-    .img_path <- obj$img_path
+    pal <- obj$pal
+    img_path <- obj$img_path
   }
 
   # read in image
-  img_rs <- image_read(.img_path)
+  img_rs <- image_read(img_path)
   info <- image_info(img_rs)
   ht <- info$height
   wd <- info$width
@@ -266,7 +276,7 @@ make_output <- function(obj = NULL, .pal, .img_path) {
   temp_output_stack <- tempfile(fileext = ".png")
 
   # saving palette
-  ggsave(plot = show_pal(.pal), filename = temp_output, height = 100, width = 1000, units = "px")
+  ggsave(plot = show_pal(pal), filename = temp_output, height = 100, width = 1000, units = "px")
 
   # stack and output
   img_selector <- image_append(image_scale(c(img_rs, image_read(temp_output)), "1000"), stack = TRUE)
@@ -288,13 +298,13 @@ make_output <- function(obj = NULL, .pal, .img_path) {
 #'
 #' Prints a message to console so you can easily copy and paste the palette
 #'
-#' @param .pal Palette vector
-#' @param .label Label
+#' @param pal Palette vector
+#' @param label Label
 #'
 #' @return a message
-paste_pal_code <- function(.pal, .label = NULL) {
-  if(is.null(.label)) .label = "pal"
-  message(cyan(paste0("\n", to_snake_case(.label)," <- c('", paste0(.pal, collapse = "', '"), "')\n")))
+paste_pal_code <- function(pal, label = NULL) {
+  if(is.null(label)) label <- "pal"
+  message(cyan(paste0("\n", to_snake_case(label)," <- c('", paste0(pal, collapse = "', '"), "')\n")))
 }
 
 

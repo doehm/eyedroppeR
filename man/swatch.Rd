@@ -11,7 +11,7 @@ swatch(
   family = "Poppins",
   padding = 0,
   radius = 20,
-  ncols = NULL,
+  ncols = 8,
   img_shadow = TRUE,
   shape = "original"
 )

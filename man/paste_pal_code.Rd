@@ -4,12 +4,12 @@
 \alias{paste_pal_code}
 \title{Copy + Pasteable palette vector}
 \usage{
-paste_pal_code(.pal, .label = NULL)
+paste_pal_code(pal, label = NULL)
 }
 \arguments{
-\item{.pal}{Palette vector}
+\item{pal}{Palette vector}
 
-\item{.label}{Label}
+\item{label}{Label}
 }
 \value{
 a message
