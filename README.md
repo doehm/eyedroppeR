@@ -66,7 +66,7 @@ that higher or lower as needed.
 <img src='dev/images/snes/secret-of-mana-og.png' height = 270 width = 480/>
 
 ``` r
-eyedropper(n = 8, img_path = '<paste address here>', pixelate = TRUE)
+eyedropper(n = 5, img_path = '<paste address here>', pixelate = TRUE)
 ```
 
 <img src='dev/images/snes/secret-of-mana-40p.png' height = 270 width = 480/>
