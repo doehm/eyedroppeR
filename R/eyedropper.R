@@ -89,7 +89,7 @@ eyedropper <- function(
       x = 0.5,
       y = c(0.9, 0.1),
       text = c("To calibrate,\nfirst click here\nwithin the dot", "Then click here\nwithin the dot")
-    ) |>
+    ) %>%
       ggplot() +
       annotation_raster(image_read(file.path(system.file(package = "eyedroppeR"), "images", "calibration.png")), xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
       geom_text(aes(x-0.1, y, label = text), size = 8, hjust = 1, lineheight = 0.8) +
@@ -116,6 +116,7 @@ eyedropper <- function(
 
   }
 
+  # if no image is given use the standard
   img_shadow <- TRUE
   if(is.null(img_path)) {
     img_path <- file.path(system.file(package = "eyedroppeR"), "images", "hex.png")

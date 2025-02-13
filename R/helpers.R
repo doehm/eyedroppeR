@@ -24,7 +24,6 @@ show_pal <- function(pal) {
 #' @param pal Vector of colours
 #' @param img Image address. Either local file or URL
 #' @param label Label for the palette.
-#' @param family Font family
 #' @param padding To add whitespace to the top of image
 #' @param radius The radius of the feature image. Choose 50 for a circle, less then 50 for rounded square/rectangle.
 #' @param ncols Number of cols in a row
@@ -48,7 +47,6 @@ swatch <- function(
     pal,
     img = NULL,
     label = NULL,
-    family = "Poppins",
     padding = 0,
     radius = 20,
     ncols = 8,
@@ -134,7 +132,7 @@ swatch <- function(
     tab_style(
       style = cell_text(
         font = c(
-          google_font(name = family),
+          google_font(name = "Poppins"),
           default_fonts()
         )
       ),

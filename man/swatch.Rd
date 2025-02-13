@@ -8,7 +8,6 @@ swatch(
   pal,
   img = NULL,
   label = NULL,
-  family = "Poppins",
   padding = 0,
   radius = 20,
   ncols = 8,
@@ -22,8 +21,6 @@ swatch(
 \item{img}{Image address. Either local file or URL}
 
 \item{label}{Label for the palette.}
-
-\item{family}{Font family}
 
 \item{padding}{To add whitespace to the top of image}
 

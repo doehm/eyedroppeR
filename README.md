@@ -38,7 +38,7 @@ Use `eyedropper` with the following steps:
     only takes a few seconds, and trust me it’s more efficient than
     selecting the wrong colours and trying to work out why.)
 
-    <img src='dev/images/calibrate.png' height = 270 width = 480/>
+    <img src='dev/images/calibrate.png' height = 222 width = 480/>
 
     <img src='dev/images/sunset-sampler.png' height = 270 width = 480/>
 
